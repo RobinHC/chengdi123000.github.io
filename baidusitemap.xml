@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+
+    
+  <url>
+    <loc>http://chengdi123000.github.io/2018/01/04/OpenFOAM%E7%9A%84%E6%AE%8B%E5%B7%AE%E5%AE%9A%E4%B9%89/</loc>
+    <lastmod>2018-01-05T15:12:42.931Z</lastmod>
+    <data>
+        <display>
+        <title>OpenFOAM的残差定义</title>
+        <pubTime>2018-01-05T00:19:44.000Z</pubTime>
+        
+        <tag>OpenFOAM</tag>
+         
+        <tag>coupledBC</tag>
+         
+         
+           
+             
+              <breadCrumb title="OpenFOAM" url="http://chengdi123000.github.io/categories/OpenFOAM/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://chengdi123000.github.io/2018/01/04/OpenFOAM%E7%9A%84%E8%80%A6%E5%90%88%E8%BE%B9%E7%95%8C%E5%A4%84%E7%90%86/</loc>
+    <lastmod>2018-01-05T15:12:40.762Z</lastmod>
+    <data>
+        <display>
+        <title>OpenFOAM的耦合边界处理</title>
+        <pubTime>2018-01-05T00:19:44.000Z</pubTime>
+        
+        <tag>OpenFOAM</tag>
+         
+        <tag>coupledBC</tag>
+         
+         
+           
+             
+              <breadCrumb title="OpenFOAM" url="http://chengdi123000.github.io/categories/OpenFOAM/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://chengdi123000.github.io/2017/08/09/hello-world/</loc>
+    <lastmod>2017-09-16T10:35:25.000Z</lastmod>
+    <data>
+        <display>
+        <title>Hello World</title>
+        <pubTime>2017-08-09T10:07:25.000Z</pubTime>
+        
+        <tag>公式</tag>
+         
+        <tag>图形</tag>
+         
+        <tag>测试</tag>
+         
+         
+           
+             
+              <breadCrumb title="博客" url="http://chengdi123000.github.io/categories/%E5%8D%9A%E5%AE%A2/"/>
+          
+        </display>
+    </data>
+    </url>
+
+</urlset>
