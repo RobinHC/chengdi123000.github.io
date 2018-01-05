@@ -124,7 +124,7 @@
 
 
 
-  <title>OpenFOAM的残差定义 | 冰水混合物</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>OpenFOAM输出完整矩阵 | 冰水混合物</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -325,7 +325,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://chengdi123000.github.io/2018/01/04/OpenFOAM的残差定义/">
+    <link itemprop="mainEntityOfPage" href="http://chengdi123000.github.io/2018/01/04/OpenFOAM输出完整矩阵/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="程迪">
@@ -342,7 +342,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">OpenFOAM的残差定义</h1>
+          <h1 class="post-title" itemprop="name headline">OpenFOAM输出完整矩阵</h1>
         
 
         <div class="post-meta">
@@ -354,7 +354,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-04T19:19:44-05:00">2018-01-05</time>
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-04T22:16:30-05:00">2018-01-05</time>
             
 
             
@@ -412,34 +412,23 @@
       
 
       
-        <p>关于OpenFOAM中残差定义的具体实现</p>
-<a id="more"></a>
-<h1 id="关于normFactor"><a href="#关于normFactor" class="headerlink" title="关于normFactor"></a>关于<code>normFactor</code></h1><p>根据代码，OpenFOAM求解器输出的标量残差initialResidual为量化的向量$L1$ 模。</p>
-<p>定义为:</p>
-<script type="math/tex; mode=display">
-Res = \frac{|r|_1}{normFactor}= \frac{|s-A\cdot x|_1}{|A\cdot x^0 - A\cdot W  \cdot x^0|_1+|s - A\cdot W\cdot x^0|_1+\epsilon}</script><p>其中$W$是有效权重矩阵</p>
-<script type="math/tex; mode=display">
-W= \frac 1 N \begin{bmatrix}  
-1 & 1 & \dots &1 &1 \\
-1 & \vdots & \ddots &\vdots  & 1 \\
-1 & \dots & \dots & 1 & 1 \\
-\end{bmatrix}_{N\times N} =  \begin{bmatrix}  
-1 \\
-1 \\
-\vdots \\
-1\\
-1
-\end{bmatrix}_{N\times1} \times  \begin{bmatrix}  
-\frac 1 N & \frac 1 N & \dots &\frac 1 N &\frac 1 N 
-\end{bmatrix} _{1\times N}\\
-=S\cdot M</script><p>$S$代表对矩阵行和算子，$M$ 代表对列向量的平均算子。</p>
-<p>$\epsilon$是非常小量，OpenFOAM常定义为+1e-20。</p>
-<p>向量$L1$模的定义为：$|x|_1= \sum_i{|x_i|}$</p>
-<p>但是要做MMS比较需要用到函数的L1模：</p>
-<script type="math/tex; mode=display">
-|r|_{L1}=\frac{\int_{\Omega}{|r|dx}}{\int_{\Omega}{dx}} \approx \frac{\sum_i{V_i |r|}}{\sum_i V_i}</script><p>与向量$L1$模相比，相差了一个单元体积的权重。</p>
-<p>我想这部分解释了为何学术界的文章里残差收敛特别快，而OpenFOAM总是收敛到一定程度就收敛不下去了，因为OpenFOAM的残差采用的normFactor每次都在随$x^0​$变化，随着解的收敛，normFactor在减小，从而导致OpenFOAM输出的残差收敛速度降低。</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//PCG.C:107</span></span><br><span class="line">...</span><br><span class="line">    <span class="comment">// --- Calculate normalised residual norm</span></span><br><span class="line">    solverPerf.initialResidual() =</span><br><span class="line">        gSumMag(rA, matrix().mesh().comm()) <span class="comment">//this is the vector L1 norm向量L1模</span></span><br><span class="line">       /normFactor;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//lduMatrixSolver.C:175</span></span><br><span class="line">Foam::scalar Foam::lduMatrix::solver::normFactor</span><br><span class="line">(</span><br><span class="line">    <span class="keyword">const</span> scalarField&amp; psi,</span><br><span class="line">    <span class="keyword">const</span> scalarField&amp; source,</span><br><span class="line">    <span class="keyword">const</span> scalarField&amp; Apsi,</span><br><span class="line">    scalarField&amp; tmpField</span><br><span class="line">) <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// --- Calculate A dot reference value of psi</span></span><br><span class="line">    matrix_.sumA(tmpField, interfaceBouCoeffs_, interfaces_); <span class="comment">//tmpField = A*S</span></span><br><span class="line"></span><br><span class="line">    tmpField *= gAverage(psi, matrix_.lduMesh_.comm()); <span class="comment">//tmpField = A*S*M*x0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// normFactor = |A*x0-A*S*M*x0|_1+|s-A*S*M*x0|_1+eps</span></span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">        gSum</span><br><span class="line">        (</span><br><span class="line">            (mag(Apsi - tmpField) + mag(source - tmpField))(),</span><br><span class="line">            matrix_.lduMesh_.comm()</span><br><span class="line">        )</span><br><span class="line">      + solverPerformance::small_;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// At convergence this simpler method is equivalent to the above</span></span><br><span class="line">    <span class="comment">// return 2*gSumMag(source) + solverPerformance::small_;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p>输出单CPU算例带耦合边界条件的fvScalarMatrix中的完整矩阵信息。<br><a id="more"></a></p>
+<h1 id="OpenFOAM输出完整矩阵"><a href="#OpenFOAM输出完整矩阵" class="headerlink" title="OpenFOAM输出完整矩阵"></a>OpenFOAM输出完整矩阵</h1><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>OpenFOAM采用的特殊矩阵模式导致输出完整矩阵很困难。本文尝试解决的是输出单CPU算例带耦合边界条件的问题中的fvScalarMatrix的问题。</p>
+<p>首先，需要限定是单CPU，否则可能存在CPU间的processorFvPatch耦合界面边界条件，fvScalarMatrix将无法包含所有的边界条件相关的源项。</p>
+<p>其次耦合边界条件中仅支持cyclic类边界条件，jumpCyclic边界条件可能存在线性代数上的一致性问题，暂时不考虑。</p>
+<p>再次，输出限于fvScalarMatrix，fvVectorMatrix的情况类似，但是涉及到更加复杂一些的操作。</p>
+<p>最后，采用<code>cnpy</code>库输出为numpy支持的npy或npz格式，便于进一步分析，具体模式为COO模式，同时<code>cnpy</code>还提供了npy2mat, npz2mat, mat2npz等工具用于与matlab交换数据。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p>需要首先安装一个<code>cnpy</code>的小程序库，用于生成numpy和matlab可以直接读取的文件。</p>
+<ul>
+<li>网址: <a href="https://github.com/rogersce/cnpy" target="_blank" rel="noopener">https://github.com/rogersce/cnpy</a></li>
+<li>命令行:</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># check tools</span></span><br><span class="line">cmake --version</span><br><span class="line">g++ --version</span><br><span class="line">git --version</span><br><span class="line"></span><br><span class="line"><span class="comment"># clone, configure, build and install</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/rogersce/cnpy.git</span><br><span class="line"><span class="built_in">cd</span> cnpy</span><br><span class="line">mkdir build</span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line">cmake .. -DENABLE_STATIC=ON -DCMAKE_INSTALL_PREFIX=<span class="variable">$HOME</span>/cnpy </span><br><span class="line">make </span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+<p>实际程序中<code>#include</code>如下代码：<code>dumpFvScalarMatrix.H</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> once</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"fvCFD.H"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;fstream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">"cnpy.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">path: 想要储存的文件名</span></span><br><span class="line"><span class="comment">EqnPtr: fvScalarMatrix 的常量引用</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dumpFvMatrix</span><span class="params">( <span class="keyword">const</span> fvScalarMatrix&amp; Eqn,fileName filepath)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (filepath.hasExt() == <span class="literal">false</span>)&#123;</span><br><span class="line">      filepath = filepath.ext(<span class="string">"npz"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">	<span class="keyword">const</span> label nCells = Eqn.diag().size();</span><br><span class="line">	<span class="keyword">const</span> label nFaces = Eqn.lower().size();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">const</span> scalar* <span class="keyword">const</span> __restrict__ diagPtr = Eqn.diag().begin();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">const</span> label* <span class="keyword">const</span> __restrict__ uPtr = Eqn.lduAddr().upperAddr().begin();</span><br><span class="line">	<span class="keyword">const</span> label* <span class="keyword">const</span> __restrict__ lPtr = Eqn.lduAddr().lowerAddr().begin();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">const</span> scalar* <span class="keyword">const</span> __restrict__ upperPtr = Eqn.upper().begin();</span><br><span class="line">	<span class="keyword">const</span> scalar* <span class="keyword">const</span> __restrict__ lowerPtr = Eqn.lower().begin();</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;scalar&gt; AA(nCells+<span class="number">2</span>*nFaces);</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;scalar&gt; S(nCells);</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;scalar&gt; x0(nCells);</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;label&gt; JR(nCells+<span class="number">2</span>*nFaces);</span><br><span class="line">	<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;label&gt; JC(nCells+<span class="number">2</span>*nFaces);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// diag</span></span><br><span class="line">	<span class="keyword">for</span>(label cell=<span class="number">0</span>;cell&lt;nCells;cell++)</span><br><span class="line">	&#123;</span><br><span class="line">		AA[cell]=diagPtr[cell];</span><br><span class="line">		JR[cell]=cell;</span><br><span class="line">		JC[cell]=cell;</span><br><span class="line">         S[cell]=Eqn.source()[cell];</span><br><span class="line">         x0[cell]=Eqn.psi()[cell];</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">    <span class="comment">//Upper</span></span><br><span class="line">	<span class="keyword">for</span>(label face=<span class="number">0</span>;face&lt;nFaces;face++)</span><br><span class="line">	&#123;</span><br><span class="line">		AA[face]=upperPtr[face];</span><br><span class="line">		JR[face]=uPtr[face];</span><br><span class="line">		JC[face]=lPtr[face];</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">    <span class="comment">//Lower</span></span><br><span class="line">	<span class="keyword">for</span>(label face=<span class="number">0</span>;face&lt;nFaces;face++)</span><br><span class="line">	&#123;</span><br><span class="line">		AA[face]=lowerPtr[face];</span><br><span class="line">		JR[face]=lPtr[face];</span><br><span class="line">		JC[face]=uPtr[face];</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="comment">//边界贡献</span></span><br><span class="line">    <span class="keyword">auto</span> I = EqnPtr.internalCoeffs();</span><br><span class="line">    <span class="keyword">auto</span> B = EqnPtr.boundaryCoeffs();</span><br><span class="line">    <span class="keyword">auto</span> psi=EqnPtr.psi();</span><br><span class="line">    <span class="keyword">auto</span> psib = psi.boundaryField();</span><br><span class="line">    forAll(psib,patchI)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">const</span> fvPatch &amp;pp = psib[patchI].patch();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(pp.coupled()) <span class="comment">//耦合边界</span></span><br><span class="line">        &#123;</span><br><span class="line">          	<span class="keyword">if</span>(pp.type()==<span class="string">"cyclicFvPatch"</span>) <span class="comment">//只处理循环边界</span></span><br><span class="line">            &#123;</span><br><span class="line">              <span class="keyword">auto</span> pnp=refCast&lt;cyclicFvPatch&gt;(pp).neighbFvPatch(); <span class="comment">//用到RTS机制</span></span><br><span class="line">              forAll(pp,faceI)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">auto</span> cellI = pp.faceCells()[faceI];</span><br><span class="line">                <span class="keyword">auto</span> cellJ = pnp.faceCells()[faceI];</span><br><span class="line">                AA[cellI] += I[patchI][faceI];</span><br><span class="line">                AA.append(B[patchI][faceI]);</span><br><span class="line">                JR.append(cellI);</span><br><span class="line">                JC.append(cellJ);</span><br><span class="line">            &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="comment">//其他非循环边界的耦合边界，统统报错退出</span></span><br><span class="line">            &#123;</span><br><span class="line">              SeriousError&lt;&lt;<span class="string">"Only support cyclic coupled BC!"</span>&lt;&lt;<span class="built_in">abort</span>();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="comment">//非耦合边界</span></span><br><span class="line">        &#123;</span><br><span class="line">            forAll(pp,faceI)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">auto</span> cellI = pp.faceCells()[faceI];</span><br><span class="line">                AA[cellI] += I[patchI][faceI];</span><br><span class="line">                S[cellI] += B[patchI][faceI];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">	cnpy::npz_save(filepath,<span class="string">"AA"</span>,&amp;AA[<span class="number">0</span>],&#123;AA.size()&#125;,<span class="string">"w"</span>);</span><br><span class="line">	cnpy::npz_save(filepath,<span class="string">"JR"</span>,&amp;JR[<span class="number">0</span>],&#123;AA.size()&#125;,<span class="string">"a"</span>);</span><br><span class="line">	cnpy::npz_save(filepath,<span class="string">"JC"</span>,&amp;JC[<span class="number">0</span>],&#123;AA.size()&#125;,<span class="string">"a"</span>);</span><br><span class="line">	cnpy::npz_save(filepath,<span class="string">"S"</span>,&amp;S[<span class="number">0</span>],&#123;S.size()&#125;,<span class="string">"a"</span>);</span><br><span class="line">	cnpy::npz_save(filepath,<span class="string">"x0"</span>,&amp;x0[<span class="number">0</span>],&#123;S.size()&#125;,<span class="string">"a"</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
+<li><a href="http://sssslide.com/www.slideshare.net/fumiyanozaki96/openfoam-32087641" target="_blank" rel="noopener">OpenFOAM －空間の離散化と係数行列の取り扱い（Spatial Discretization and Coefficient Matrix）－byFumiya Nozaki</a>中的第38页。</li>
+</ol>
 
       
     </div>
@@ -489,7 +478,7 @@ W= \frac 1 N \begin{bmatrix}
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://chengdi123000.github.io/2018/01/04/OpenFOAM的残差定义/" title="OpenFOAM的残差定义">http://chengdi123000.github.io/2018/01/04/OpenFOAM的残差定义/</a>
+    <a href="http://chengdi123000.github.io/2018/01/04/OpenFOAM输出完整矩阵/" title="OpenFOAM输出完整矩阵">http://chengdi123000.github.io/2018/01/04/OpenFOAM输出完整矩阵/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -502,14 +491,6 @@ W= \frac 1 N \begin{bmatrix}
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/OpenFOAM/" rel="tag"># OpenFOAM</a>
-          
-            <a href="/tags/coupledBC/" rel="tag"># coupledBC</a>
-          
-        </div>
-      
 
       
       
@@ -519,8 +500,8 @@ W= \frac 1 N \begin{bmatrix}
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/08/09/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2018/01/04/OpenFOAM的耦合边界处理/" rel="next" title="OpenFOAM的耦合边界处理">
+                <i class="fa fa-chevron-left"></i> OpenFOAM的耦合边界处理
               </a>
             
           </div>
@@ -529,8 +510,8 @@ W= \frac 1 N \begin{bmatrix}
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/01/04/OpenFOAM的耦合边界处理/" rel="prev" title="OpenFOAM的耦合边界处理">
-                OpenFOAM的耦合边界处理 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/01/05/OpenFOAM在docker中的使用/" rel="prev" title="OpenFOAM在docker中的使用">
+                OpenFOAM在docker中的使用 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -717,7 +698,7 @@ W= \frac 1 N \begin{bmatrix}
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#关于normFactor"><span class="nav-number">1.</span> <span class="nav-text">关于normFactor</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenFOAM输出完整矩阵"><span class="nav-number">1.</span> <span class="nav-text">OpenFOAM输出完整矩阵</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码"><span class="nav-number">1.2.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.3.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
             
 
           </div>
