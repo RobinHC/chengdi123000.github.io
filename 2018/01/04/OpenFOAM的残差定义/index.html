@@ -64,7 +64,7 @@
 
 
 
-  <meta name="keywords" content="OpenFOAM,coupledBC," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -75,18 +75,15 @@
 
 
 
-<meta name="description" content="关于OpenFOAM中耦合边界的具体实现">
-<meta name="keywords" content="OpenFOAM,coupledBC">
-<meta property="og:type" content="article">
-<meta property="og:title" content="OpenFOAM的耦合边界处理">
-<meta property="og:url" content="http://chengdi123000.github.io/2018/01/04/OpenFOAM的耦合边界处理/index.html">
+<meta name="keywords" content="OpenFOAM, CFD, HPC, combustion">
+<meta property="og:type" content="website">
+<meta property="og:title" content="冰水混合物">
+<meta property="og:url" content="http://chengdi123000.github.io/404.html">
 <meta property="og:site_name" content="冰水混合物">
-<meta property="og:description" content="关于OpenFOAM中耦合边界的具体实现">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-05T15:12:40.762Z">
+<meta property="og:updated_time" content="2018-01-05T15:31:57.581Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="OpenFOAM的耦合边界处理">
-<meta name="twitter:description" content="关于OpenFOAM中耦合边界的具体实现">
+<meta name="twitter:title" content="冰水混合物">
 
 
 
@@ -118,7 +115,7 @@
 
 
 
-  <link rel="canonical" href="http://chengdi123000.github.io/2018/01/04/OpenFOAM的耦合边界处理/"/>
+  <link rel="canonical" href="http://chengdi123000.github.io/404.html"/>
 
 
 
@@ -331,15 +328,12 @@
         <p>关于OpenFOAM中残差定义的具体实现</p>
 <a id="more"></a>
 <h1 id="关于normFactor"><a href="#关于normFactor" class="headerlink" title="关于normFactor"></a>关于<code>normFactor</code></h1><p>根据代码，OpenFOAM求解器输出的标量残差initialResidual为量化的向量$L1$ 模。</p>
-<p>定义为:</p>
-<p>$$<br>Res = \frac{|r|_1}{normFactor}= \frac{|s-A\cdot x|_1}{|A\cdot x^0 - A\cdot W  \cdot x^0|_1+|s - A\cdot W\cdot x^0|_1+\epsilon}<br>$$</p>
-<p>其中 $W$ 是有效权重矩阵</p>
-<p>$$<br>W= \frac 1 N \begin{bmatrix}<br>1 &amp; 1 &amp; \dots &amp;1 &amp;1 \<br>1 &amp; \vdots &amp; \ddots &amp;\vdots  &amp; 1 \<br>1 &amp; \dots &amp; \dots &amp; 1 &amp; 1 \<br>\end{bmatrix}<em>{N\times N} =  \begin{bmatrix}<br>1 \<br>1 \<br>\vdots \<br>1\<br>1<br>\end{bmatrix}</em>{N\times 1} \times  \begin{bmatrix}<br>\frac 1 N &amp; \frac 1 N &amp; \dots &amp;\frac 1 N &amp;\frac 1 N<br>\end{bmatrix} _{1\times N}\<br>=[行和算子]\times[向量平均算子]<br>$$</p>
-<p>$\epsilon$ 是非常小量，OpenFOAM常定义为+1e-20。</p>
+<p>定义为:<br>$$<br>Res = \frac{|r|_1}{normFactor}= \frac{|s-A\cdot x|_1}{|A\cdot x^0 - A\cdot W  \cdot x^0|_1+|s - A\cdot W\cdot x^0|_1+\epsilon}<br>$$<br>其中$W$是有效权重矩阵<br>$$<br>W= \frac 1 N \begin{bmatrix}<br>1 &amp; 1 &amp; \dots &amp;1 &amp;1 \\<br>1 &amp; \vdots &amp; \ddots &amp;\vdots  &amp; 1 \\<br>1 &amp; \dots &amp; \dots &amp; 1 &amp; 1 \\<br>\end{bmatrix}_{N\times N} =  \begin{bmatrix}<br>1 \\<br>1 \\<br>\vdots \\<br>1\\<br>1<br>\end{bmatrix}_{N\times1} \times  \begin{bmatrix}<br>\frac 1 N &amp; \frac 1 N &amp; \dots &amp;\frac 1 N &amp;\frac 1 N<br>\end{bmatrix} _{1\times N}\\<br>=[行和算子]\times[向量平均算子]<br>$$<br>$\epsilon$是非常小量，OpenFOAM常定义为+1e-20。</p>
 <p>向量$L1$模的定义为：$|x|_1= \sum_i{|x_i|}$</p>
-<p>但是要做MMS比较需要用到函数的L1模：<br>$$<br>|r|<em>{L1}=\frac{\int</em>{\Omega}{|r|dx}}{\int_{\Omega}{dx}} \approx \frac{\sum_i{V_i |r|}}{\sum_i V_i}<br>$$<br>与向量$L1$模相比，相差了一个单元体积的权重。</p>
+<p>但是要做MMS比较需要用到函数的L1模：<br>$$<br>|r|_{L1}=\frac{\int_{\Omega}{|r|dx}}{\int_{\Omega}{dx}} \approx \frac{\sum_i{V_i |r|}}{\sum_i V_i}<br>$$<br>与向量$L1$模相比，相差了一个单元体积的权重。</p>
 <p>我想这部分解释了为何学术界的文章里残差收敛特别快，而OpenFOAM总是收敛到一定程度就收敛不下去了，因为OpenFOAM的残差采用的normFactor每次都在随$x^0$变化，随着解的收敛，normFactor在减小，从而导致OpenFOAM输出的残差收敛速度降低。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//PCG.C:107</span></span><br><span class="line">...</span><br><span class="line">    <span class="comment">// --- Calculate normalised residual norm</span></span><br><span class="line">    solverPerf.initialResidual() =</span><br><span class="line">        gSumMag(rA, matrix().mesh().comm())</span><br><span class="line">       /normFactor;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//lduMatrixSolver.C:175</span></span><br><span class="line">Foam::scalar Foam::lduMatrix::solver::normFactor</span><br><span class="line">(</span><br><span class="line">    <span class="keyword">const</span> scalarField&amp; psi,</span><br><span class="line">    <span class="keyword">const</span> scalarField&amp; source,</span><br><span class="line">    <span class="keyword">const</span> scalarField&amp; Apsi,</span><br><span class="line">    scalarField&amp; tmpField</span><br><span class="line">) <span class="keyword">const</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// --- Calculate A dot reference value of psi</span></span><br><span class="line">    matrix_.sumA(tmpField, interfaceBouCoeffs_, interfaces_);</span><br><span class="line"></span><br><span class="line">    tmpField *= gAverage(psi, matrix_.lduMesh_.comm());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">        gSum</span><br><span class="line">        (</span><br><span class="line">            (mag(Apsi - tmpField) + mag(source - tmpField))(),</span><br><span class="line">            matrix_.lduMesh_.comm()</span><br><span class="line">        )</span><br><span class="line">      + solverPerformance::small_;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// At convergence this simpler method is equivalent to the above</span></span><br><span class="line">    <span class="comment">// return 2*gSumMag(source) + solverPerformance::small_;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
       
     </div>
     
@@ -418,8 +412,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/08/09/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2018/01/04/OpenFOAM的耦合边界处理/" rel="next" title="OpenFOAM的耦合边界处理">
+                <i class="fa fa-chevron-left"></i> OpenFOAM的耦合边界处理
               </a>
             
           </div>
@@ -427,10 +421,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/01/04/OpenFOAM的耦合边界处理/" rel="prev" title="OpenFOAM的耦合边界处理">
-                OpenFOAM的耦合边界处理 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
