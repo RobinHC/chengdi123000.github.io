@@ -7,7 +7,7 @@
 
 <html class="theme-next muse use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
@@ -129,7 +129,7 @@
 
 
 
-  <title> | 冰水混合物</title>
+  <title>MASA的安装 | 冰水混合物</title>
   
 
 
@@ -153,7 +153,7 @@
       var s = document.getElementsByTagName("script")[0];
       s.parentNode.insertBefore(hm, s);
     })();
-  </script>
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 
 
@@ -167,7 +167,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -369,48 +369,285 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chengdi123000.github.io/2018/01/05/MASA的安装/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="程迪">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="冰水混合物">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline"></h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <!DOCTYPE HTML>
-<html>
-<head>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta http-equiv="content-type" content="text/html;charset=utf-8;">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta name="robots" content="all">
-  <meta name="robots" content="index,follow">
-  <link rel="stylesheet" type="text/css" href="https://qzone.qq.com/gy/404/style/404style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head>
-<body>
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><script type="text/plain" src="http://www.qq.com/404/search_children.js" charset="utf-8" homepageurl="/" homepagename="回到我的主页">
-  </script>
-  <script src="https://qzone.qq.com/gy/404/data.js" charset="utf-8"></script>
-  <script src="https://qzone.qq.com/gy/404/page.js" charset="utf-8"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</body>
-</html>
+          <h1 class="post-title" itemprop="name headline">MASA的安装</h1>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-05T21:16:30+08:00">2018-01-05</time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MMS/" itemprop="url" rel="index">
+                    <span itemprop="name">MMS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/05/MASA的安装/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/01/05/MASA的安装/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <p>MASA (Manufactured Analytical Solution Abstraction) 的安装<br><a id="more"></a></p>
+<h1 id="MASA的安装"><a href="#MASA的安装" class="headerlink" title="MASA的安装"></a>MASA的安装</h1><p>MASA (Manufactured Analytical Solution Abstraction) 是一个经过验证的虚构解验证程序库，用C++写的，并提供C, python, Fortran90等其他语言的接口。可以用于对常见偏微分方程的模拟程序进行代码验证（Code Verification）。</p>
+<p>它所包含的方程有：</p>
+<ol>
+<li>Heat Equation</li>
+<li>Laplace’s Equation</li>
+<li>Euler Equations (with and without thermal equilibrium chemistry)</li>
+<li>Navier-Stokes Equations</li>
+<li>Reynolds Averaged Navier Stokes with Various Turbulence Models</li>
+</ol>
+<p>MASA 网址: <a href="https://github.com/manufactured-solutions/MASA.git" target="_blank" rel="noopener">https://github.com/manufactured-solutions/MASA.git</a></p>
+<p>MASA 文档: <a href="http://manufactured-solutions.github.io/MASA/" target="_blank" rel="noopener">http://manufactured-solutions.github.io/MASA/</a></p>
+<h2 id="下载和编译"><a href="#下载和编译" class="headerlink" title="下载和编译"></a>下载和编译</h2><pre><code>cd
+git clone https://github.com/manufactured-solutions/MASA.git MASA_src
+cd MASA_src
+
+# check tools
+which gcc gfortran g++
+</code></pre><p>但是这个文件夹中没有常见的configure, CMakeLists.txt和Makefile，所以不知道怎么编译。</p>
+<p>经过搜索，发现这个库应该用 <a href="https://en.wikipedia.org/wiki/GNU_Build_System" target="_blank" rel="noopener">GNU Build System</a> 来编译。</p>
+<p>GNU Build System的整个流程如下图所示：</p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Autoconf-automake-process.svg" alt="flowchart of build tools"></p>
+<p>所以需要的命令如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 切换到root</span><br><span class="line">yum install libtool autoconf automake gcc-gfortran swig  python-devel -y</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 切换回来</span><br><span class="line">su ofuser</span><br><span class="line">cd</span><br><span class="line">cd MASA_src</span><br><span class="line">autoreconf -i</span><br><span class="line">./configure --prefix=$HOME/lib/MASA \</span><br><span class="line">--enable-python-interfaces \</span><br><span class="line">--enable-fortran-interfaces \</span><br><span class="line">--enable-static \</span><br><span class="line">--enable-warn-all \</span><br><span class="line">--enable-coverage \</span><br><span class="line">--enable-strict-tests \</span><br><span class="line">make</span><br><span class="line">make check #FAIL: f_insh</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+<p>一些关于库使用的输出:</p>
+<pre><code>----------------------------------------------------------------------
+Libraries have been installed in:
+   /home/ofuser/lib/MASA/lib
+
+If you ever happen to want to link against installed libraries
+in a given directory, LIBDIR, you must either use libtool, and
+specify the full pathname of the library, or use the `-LLIBDIR&#39;
+flag during linking and do at least one of the following:
+   - add LIBDIR to the `LD_LIBRARY_PATH&#39; environment variable
+     during execution
+   - add LIBDIR to the `LD_RUN_PATH&#39; environment variable
+     during linking
+   - use the `-Wl,-rpath -Wl,LIBDIR&#39; linker flag
+   - have your system administrator add LIBDIR to `/etc/ld.so.conf&#39;
+
+See any operating system documentation about shared libraries for
+more information, such as the ld(1) and ld.so(8) manual pages.
+----------------------------------------------------------------------
+Libraries have been installed in:
+   /home/ofuser/lib/MASA/lib64/python2.7/site-packages/masa
+
+If you ever happen to want to link against installed libraries
+in a given directory, LIBDIR, you must either use libtool, and
+specify the full pathname of the library, or use the `-LLIBDIR&#39;
+flag during linking and do at least one of the following:
+   - add LIBDIR to the `LD_LIBRARY_PATH&#39; environment variable
+     during execution
+   - add LIBDIR to the `LD_RUN_PATH&#39; environment variable
+     during linking
+   - use the `-Wl,-rpath -Wl,LIBDIR&#39; linker flag
+   - have your system administrator add LIBDIR to `/etc/ld.so.conf&#39;
+
+See any operating system documentation about shared libraries for
+more information, such as the ld(1) and ld.so(8) manual pages.
+----------------------------------------------------------------------
+</code></pre>
       
     </div>
     
     
     
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果觉得此文不错，欢迎大爷/姐姐打赏</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="程迪 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="程迪 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    程迪
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://chengdi123000.github.io/2018/01/05/MASA的安装/" title="MASA的安装">http://chengdi123000.github.io/2018/01/05/MASA的安装/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MMS/" rel="tag"># MMS</a>
+          
+            <a href="/tags/MASA/" rel="tag"># MASA</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/05/OpenFOAM在docker中的使用/" rel="next" title="OpenFOAM在docker中的使用">
+                <i class="fa fa-chevron-left"></i> OpenFOAM在docker中的使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -453,8 +690,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -612,6 +858,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#MASA的安装"><span class="nav-number">1.</span> <span class="nav-text">MASA的安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载和编译"><span class="nav-number">1.1.</span> <span class="nav-text">下载和编译</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -759,9 +1021,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://chengdi123000.github.io/404.html';
-          this.page.identifier = '404.html';
-          this.page.title = '';
+          this.page.url = 'http://chengdi123000.github.io/2018/01/05/MASA的安装/';
+          this.page.identifier = '2018/01/05/MASA的安装/';
+          this.page.title = 'MASA的安装';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://chengdis-blog.disqus.com/embed.js';
@@ -1163,7 +1425,24 @@
         }
       });
     </script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
   
 
 

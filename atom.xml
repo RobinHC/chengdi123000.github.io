@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://chengdi123000.github.io/"/>
-  <updated>2018-01-06T00:50:07.188Z</updated>
+  <updated>2018-01-06T03:00:12.764Z</updated>
   <id>http://chengdi123000.github.io/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MASA的安装</title>
+    <link href="http://chengdi123000.github.io/2018/01/05/MASA%E7%9A%84%E5%AE%89%E8%A3%85/"/>
+    <id>http://chengdi123000.github.io/2018/01/05/MASA的安装/</id>
+    <published>2018-01-05T13:16:30.000Z</published>
+    <updated>2018-01-06T03:00:12.764Z</updated>
+    
+    <content type="html"><![CDATA[<p>MASA (Manufactured Analytical Solution Abstraction) 的安装<br><a id="more"></a></p><h1 id="MASA的安装"><a href="#MASA的安装" class="headerlink" title="MASA的安装"></a>MASA的安装</h1><p>MASA (Manufactured Analytical Solution Abstraction) 是一个经过验证的虚构解验证程序库，用C++写的，并提供C, python, Fortran90等其他语言的接口。可以用于对常见偏微分方程的模拟程序进行代码验证（Code Verification）。</p><p>它所包含的方程有：</p><ol><li>Heat Equation</li><li>Laplace’s Equation</li><li>Euler Equations (with and without thermal equilibrium chemistry)</li><li>Navier-Stokes Equations</li><li>Reynolds Averaged Navier Stokes with Various Turbulence Models</li></ol><p>MASA 网址: <a href="https://github.com/manufactured-solutions/MASA.git" target="_blank" rel="noopener">https://github.com/manufactured-solutions/MASA.git</a></p><p>MASA 文档: <a href="http://manufactured-solutions.github.io/MASA/" target="_blank" rel="noopener">http://manufactured-solutions.github.io/MASA/</a></p><h2 id="下载和编译"><a href="#下载和编译" class="headerlink" title="下载和编译"></a>下载和编译</h2><pre><code>cdgit clone https://github.com/manufactured-solutions/MASA.git MASA_srccd MASA_src# check toolswhich gcc gfortran g++</code></pre><p>但是这个文件夹中没有常见的configure, CMakeLists.txt和Makefile，所以不知道怎么编译。</p><p>经过搜索，发现这个库应该用 <a href="https://en.wikipedia.org/wiki/GNU_Build_System" target="_blank" rel="noopener">GNU Build System</a> 来编译。</p><p>GNU Build System的整个流程如下图所示：</p><p><img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Autoconf-automake-process.svg" alt="flowchart of build tools"></p><p>所以需要的命令如下：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 切换到root</span><br><span class="line">yum install libtool autoconf automake gcc-gfortran swig  python-devel -y</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 切换回来</span><br><span class="line">su ofuser</span><br><span class="line">cd</span><br><span class="line">cd MASA_src</span><br><span class="line">autoreconf -i</span><br><span class="line">./configure --prefix=$HOME/lib/MASA \</span><br><span class="line">--enable-python-interfaces \</span><br><span class="line">--enable-fortran-interfaces \</span><br><span class="line">--enable-static \</span><br><span class="line">--enable-warn-all \</span><br><span class="line">--enable-coverage \</span><br><span class="line">--enable-strict-tests \</span><br><span class="line">make</span><br><span class="line">make check #FAIL: f_insh</span><br><span class="line">make install</span><br></pre></td></tr></table></figure><p>一些关于库使用的输出:</p><pre><code>----------------------------------------------------------------------Libraries have been installed in:   /home/ofuser/lib/MASA/libIf you ever happen to want to link against installed librariesin a given directory, LIBDIR, you must either use libtool, andspecify the full pathname of the library, or use the `-LLIBDIR&#39;flag during linking and do at least one of the following:   - add LIBDIR to the `LD_LIBRARY_PATH&#39; environment variable     during execution   - add LIBDIR to the `LD_RUN_PATH&#39; environment variable     during linking   - use the `-Wl,-rpath -Wl,LIBDIR&#39; linker flag   - have your system administrator add LIBDIR to `/etc/ld.so.conf&#39;See any operating system documentation about shared libraries formore information, such as the ld(1) and ld.so(8) manual pages.----------------------------------------------------------------------Libraries have been installed in:   /home/ofuser/lib/MASA/lib64/python2.7/site-packages/masaIf you ever happen to want to link against installed librariesin a given directory, LIBDIR, you must either use libtool, andspecify the full pathname of the library, or use the `-LLIBDIR&#39;flag during linking and do at least one of the following:   - add LIBDIR to the `LD_LIBRARY_PATH&#39; environment variable     during execution   - add LIBDIR to the `LD_RUN_PATH&#39; environment variable     during linking   - use the `-Wl,-rpath -Wl,LIBDIR&#39; linker flag   - have your system administrator add LIBDIR to `/etc/ld.so.conf&#39;See any operating system documentation about shared libraries formore information, such as the ld(1) and ld.so(8) manual pages.----------------------------------------------------------------------</code></pre>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;MASA (Manufactured Analytical Solution Abstraction) 的安装&lt;br&gt;
+    
+    </summary>
+    
+      <category term="MMS" scheme="http://chengdi123000.github.io/categories/MMS/"/>
+    
+    
+      <category term="MMS" scheme="http://chengdi123000.github.io/tags/MMS/"/>
+    
+      <category term="MASA" scheme="http://chengdi123000.github.io/tags/MASA/"/>
+    
+  </entry>
   
   <entry>
     <title>OpenFOAM在docker中的使用</title>
