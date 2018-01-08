@@ -887,11 +887,15 @@ U_e = \frac 1 2 (U_E+U_P)+\frac{\delta V}{4a_P\Delta x}[P_{EE}-3P_E+3P_P-P_W]</s
 <h3 id="simpleFoam中phi变量的更新。"><a href="#simpleFoam中phi变量的更新。" class="headerlink" title="simpleFoam中phi变量的更新。"></a>simpleFoam中<code>phi</code>变量的更新。</h3><p>如果仔细的人应该会发现，<code>phi</code>这个变量在simpleFoam中是由<code>createFields.H</code>调用<code>createPhi.H</code>创建的，然后在<code>UEqn.H</code>中被<code>fvm::div(phi,U)</code>使用，那么在下一次迭代之前它是如何更新的呢？</p>
 <p>我们发现它是在<code>pEqn.H</code>中更新的。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//pEqn.H</span></span><br><span class="line">	<span class="keyword">if</span> (simple.finalNonOrthogonalIter())</span><br><span class="line">        &#123;</span><br><span class="line">            phi = phiHbyA - pEqn.flux();</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
-<h3 id="关于adjustPhi-和-setReference"><a href="#关于adjustPhi-和-setReference" class="headerlink" title="关于adjustPhi, 和 setReference"></a>关于adjustPhi, 和 setReference</h3><p>adjustPhi和pRef针对的是压力方程为全Neuman边界的情况<sup><a href="#fn_12" id="reffn_12">12</a></sup>，这时解的存在唯一性会有两个问题:</p>
+<h3 id="关于adjustPhi-和-setReference"><a href="#关于adjustPhi-和-setReference" class="headerlink" title="关于adjustPhi, 和 setReference"></a>关于adjustPhi, 和 setReference</h3><p>adjustPhi和pRef针对的是压力方程为全Neuman边界的情况<sup><a href="#fn_12" id="reffn_12">12</a></sup>，这时解的存在唯一性可能会有两个问题:</p>
 <ul>
-<li>唯一性：方程系数矩阵M 列秩不满时，解有无穷多，相互之间相差一个常数，所以需要setReference</li>
-<li>存在性：方程的增广矩阵行秩不满时，存在相容性问题，需要<code>adjustPhi</code></li>
+<li>唯一性：方程系数矩阵M 列秩不满时，解有无穷多（例如$x_1+x_2=1,2x_1+2x_2=2$），互之间相差一组常数（或者一组常函数，或零空间元素），所以需要setReference</li>
+<li>存在性：方程的增广矩阵秩和M的秩不一样时（例如$x_1+x_2=1,-x_1-x_2=-2$），存在相容性问题，需要<code>adjustPhi</code></li>
 </ul>
+<p>关于线性代数知识可以参考<sup><a href="#fn_23" id="reffn_23">23</a></sup></p>
+<blockquote id="fn_23">
+<sup>23</sup>. <a href="http://math.fudan.edu.cn/gdsx/JIAOAN/%E7%BA%BF%E6%80%A7%E6%96%B9%E7%A8%8B%E7%BB%84.pdf" target="_blank" rel="noopener">教案： 线性方程组</a><a href="#reffn_23" title="Jump back to footnote [23] in the text."> &#8617;</a>
+</blockquote>
 <h4 id="方程多解问题：setReference"><a href="#方程多解问题：setReference" class="headerlink" title="方程多解问题：setReference"></a>方程多解问题：setReference</h4><p>当方程为：</p>
 <script type="math/tex; mode=display">
 \Delta p = f \text{ on }\Omega \\
