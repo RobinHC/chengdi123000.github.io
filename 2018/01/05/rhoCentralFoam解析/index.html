@@ -101,7 +101,7 @@
     root: '/',
     scheme: 'Muse',
     version: '6.0.0',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: false,
     fastclick: false,
     lazyload: false,
@@ -672,150 +672,150 @@ w_f = \frac{|\mathbf{S}_f\cdot\mathbf{d}_{fN}|}{|\mathbf{S}_f\cdot\mathbf{d}_{}|
 <table>
 <thead>
 <tr>
-<th>code variable</th>
-<th>line No.</th>
-<th>dimension</th>
-<th>paper symbol</th>
-<th>equation No.</th>
-<th>comment</th>
+<th style="text-align:center">code variable</th>
+<th style="text-align:center">line No.</th>
+<th style="text-align:center">dimension</th>
+<th style="text-align:center">文章中的符号</th>
+<th style="text-align:right">equation No.</th>
+<th style="text-align:left">comment</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>rPsi</td>
-<td>80</td>
-<td>$L^2/T^2$</td>
-<td>$\frac{dp}{d\rho}=RT$</td>
-<td>无</td>
-<td>thermo模型中的变量psi的倒数</td>
+<td style="text-align:center">rPsi</td>
+<td style="text-align:center">80</td>
+<td style="text-align:center">$L^2/T^2$</td>
+<td style="text-align:center">$\frac{dp}{d\rho}=RT$</td>
+<td style="text-align:right">无</td>
+<td style="text-align:left">thermo模型中的变量psi的倒数</td>
 </tr>
 <tr>
-<td>phiv_pos</td>
-<td>93</td>
-<td>$L^3/T$</td>
-<td>$\phi_{f+}=\mathbf{u}_+\cdot \mathbf{S}_{f} $</td>
-<td>7</td>
-<td>正向体积流量</td>
+<td style="text-align:center">phiv_pos</td>
+<td style="text-align:center">93</td>
+<td style="text-align:center">$L^3/T$</td>
+<td style="text-align:center">$\phi_{f+}=\mathbf{u}_+\cdot \mathbf{S}_{f} $</td>
+<td style="text-align:right">7</td>
+<td style="text-align:left">正向体积流量</td>
 </tr>
 <tr>
-<td>phiv_neg</td>
-<td>94</td>
-<td>$L^3/T$</td>
-<td>$\phi_{f-}=\mathbf{u}_-\cdot \mathbf{S}_{f} $</td>
-<td>7</td>
-<td>反向体积流量</td>
+<td style="text-align:center">phiv_neg</td>
+<td style="text-align:center">94</td>
+<td style="text-align:center">$L^3/T$</td>
+<td style="text-align:center">$\phi_{f-}=\mathbf{u}_-\cdot \mathbf{S}_{f} $</td>
+<td style="text-align:right">7</td>
+<td style="text-align:left">反向体积流量</td>
 </tr>
 <tr>
-<td>ap</td>
-<td>108</td>
-<td>$L^3/T$</td>
-<td>$\psi_{f+}$</td>
-<td>8</td>
-<td>正向体积流量权重</td>
+<td style="text-align:center">ap</td>
+<td style="text-align:center">108</td>
+<td style="text-align:center">$L^3/T$</td>
+<td style="text-align:center">$\psi_{f+}$</td>
+<td style="text-align:right">8</td>
+<td style="text-align:left">正向体积流量权重</td>
 </tr>
 <tr>
-<td>am</td>
-<td>113</td>
-<td>$L^3/T$</td>
-<td>$-\psi_{f-}$</td>
-<td>8</td>
-<td>负向体积流量权重的相反数</td>
+<td style="text-align:center">am</td>
+<td style="text-align:center">113</td>
+<td style="text-align:center">$L^3/T$</td>
+<td style="text-align:center">$-\psi_{f-}$</td>
+<td style="text-align:right">8</td>
+<td style="text-align:left">负向体积流量权重的相反数</td>
 </tr>
 <tr>
-<td>a_pos</td>
-<td>119</td>
-<td>$1$</td>
-<td>$\alpha=\frac{\psi_{f+}}{\psi_{f+}+\psi_{f-}}$</td>
-<td>9-KNP</td>
-<td>KNP格式中的$\alpha$，在KT格式中为1/2</td>
+<td style="text-align:center">a_pos</td>
+<td style="text-align:center">119</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$\alpha=\frac{\psi_{f+}}{\psi_{f+}+\psi_{f-}}$</td>
+<td style="text-align:right">9-KNP</td>
+<td style="text-align:left">KNP格式中的$\alpha$，在KT格式中为1/2</td>
 </tr>
 <tr>
-<td>amaxSf</td>
-<td>121</td>
-<td>$L^3/T$</td>
-<td>$\max(\psi_{f+},\psi_{f-})$</td>
-<td>无</td>
-<td>编程需要构造出来的一个变量</td>
+<td style="text-align:center">amaxSf</td>
+<td style="text-align:center">121</td>
+<td style="text-align:center">$L^3/T$</td>
+<td style="text-align:center">$\max(\psi_{f+},\psi_{f-})$</td>
+<td style="text-align:right">无</td>
+<td style="text-align:left">编程需要构造出来的一个变量</td>
 </tr>
 <tr>
-<td>aSf</td>
-<td>123</td>
-<td>$L^3/T$</td>
-<td>$\omega_f= -\alpha\psi_{f-} \\ =-\frac{\psi_{f+}\psi_{f-}}{\psi_{f+}+\psi_{f-}}$</td>
-<td>10-KNP</td>
-<td>公式10-KNP展开，扩散体积通量，对于物质导数中的对流项是必须的，可与公式13对照；在KT格式中有所不同</td>
+<td style="text-align:center">aSf</td>
+<td style="text-align:center">123</td>
+<td style="text-align:center">$L^3/T$</td>
+<td style="text-align:center">$\omega_f= -\alpha\psi_{f-} \\ =-\frac{\psi_{f+}\psi_{f-}}{\psi_{f+}+\psi_{f-}}$</td>
+<td style="text-align:right">10-KNP</td>
+<td style="text-align:left">公式10-KNP展开，扩散体积通量，对于物质导数中的对流项是必须的，可与公式13对照；在KT格式中有所不同</td>
 </tr>
 <tr>
-<td>a_neg</td>
-<td>131</td>
-<td>$1$</td>
-<td>$1-\alpha$</td>
-<td>7</td>
-<td></td>
+<td style="text-align:center">a_neg</td>
+<td style="text-align:center">131</td>
+<td style="text-align:center">$1$</td>
+<td style="text-align:center">$1-\alpha$</td>
+<td style="text-align:right">7</td>
+<td style="text-align:left"></td>
 </tr>
 <tr>
-<td>phiv_pos</td>
-<td>133</td>
-<td>$L^3/T$</td>
-<td>$\alpha\phi_{f+}$</td>
-<td>7</td>
-<td></td>
+<td style="text-align:center">phiv_pos</td>
+<td style="text-align:center">133</td>
+<td style="text-align:center">$L^3/T$</td>
+<td style="text-align:center">$\alpha\phi_{f+}$</td>
+<td style="text-align:right">7</td>
+<td style="text-align:left"></td>
 </tr>
 <tr>
-<td>phiv_neg</td>
-<td>134</td>
-<td>$L^3/T$</td>
-<td>$(1-\alpha)\phi_{f-}$</td>
-<td>7</td>
-<td></td>
+<td style="text-align:center">phiv_neg</td>
+<td style="text-align:center">134</td>
+<td style="text-align:center">$L^3/T$</td>
+<td style="text-align:center">$(1-\alpha)\phi_{f-}$</td>
+<td style="text-align:right">7</td>
+<td style="text-align:left"></td>
 </tr>
 <tr>
-<td>aphiv_pos</td>
-<td>136</td>
-<td>$L^3/T$</td>
-<td>$\alpha\phi_{f+}+\omega_f$</td>
-<td>7-变形</td>
-<td>原文公式7中$\mathbf{\Psi}_{f+}$的系数，但是原文$\omega_f$符号有错误</td>
+<td style="text-align:center">aphiv_pos</td>
+<td style="text-align:center">136</td>
+<td style="text-align:center">$L^3/T$</td>
+<td style="text-align:center">$\alpha\phi_{f+}+\omega_f$</td>
+<td style="text-align:right">7-变形</td>
+<td style="text-align:left">原文公式7中$\mathbf{\Psi}_{f+}$的系数，但是原文$\omega_f$符号有错误</td>
 </tr>
 <tr>
-<td>aphiv_neg</td>
-<td>137</td>
-<td>$L^3/T$</td>
-<td>$(1-\alpha)\phi_{f-}-\omega_f$</td>
-<td>7-变形</td>
-<td>原文公式7中$\mathbf{\Psi}_{f-}$的系数，但是原文$\omega_f$符号有错误</td>
+<td style="text-align:center">aphiv_neg</td>
+<td style="text-align:center">137</td>
+<td style="text-align:center">$L^3/T$</td>
+<td style="text-align:center">$(1-\alpha)\phi_{f-}-\omega_f$</td>
+<td style="text-align:right">7-变形</td>
+<td style="text-align:left">原文公式7中$\mathbf{\Psi}_{f-}$的系数，但是原文$\omega_f$符号有错误</td>
 </tr>
 <tr>
-<td>amaxSf(第二次使用)</td>
-<td>141</td>
-<td>$L^3/T$</td>
-<td><script type="math/tex">\max(\mid\alpha\phi_{f+}+ \omega_f\mid, \\ \mid(1-\alpha)\phi_{f-}-\omega_f\mid)</script></td>
-<td>无</td>
-<td>中心格式预测的幅值最大的数值单向通量</td>
+<td style="text-align:center">amaxSf(第二次使用)</td>
+<td style="text-align:center">141</td>
+<td style="text-align:center">$L^3/T$</td>
+<td style="text-align:center"><script type="math/tex">\max(\mid\alpha\phi_{f+}+ \omega_f\mid, \\ \mid(1-\alpha)\phi_{f-}-\omega_f\mid)</script></td>
+<td style="text-align:right">无</td>
+<td style="text-align:left">中心格式预测的幅值最大的数值单向通量</td>
 </tr>
 <tr>
-<td>phi</td>
-<td>159</td>
-<td>$\frac M T$</td>
-<td>$(\alpha\phi_{f+}+\omega_f)\rho_+ \\ + ((1-\alpha)\phi_{f-}-\omega_f)\rho_{-}$</td>
-<td>无</td>
-<td>界面数值重构的质量通量</td>
+<td style="text-align:center">phi</td>
+<td style="text-align:center">159</td>
+<td style="text-align:center">$\frac M T$</td>
+<td style="text-align:center">$(\alpha\phi_{f+}+\omega_f)\rho_+ \\ + ((1-\alpha)\phi_{f-}-\omega_f)\rho_{-}$</td>
+<td style="text-align:right">无</td>
+<td style="text-align:left">界面数值重构的质量通量</td>
 </tr>
 <tr>
-<td>phiUp</td>
-<td>167</td>
-<td>$\frac M {LT^2}$</td>
-<td>$(\alpha\phi_{f+}+\omega_f)[\rho\mathbf u]_+ \\ + ((1-\alpha)\phi_{f-}-\omega_f)[\rho\mathbf u]_- \\ +(\alpha p_++(1-\alpha)p_-)\mathbf S_f$</td>
-<td>无</td>
-<td>界面数值重构的动量通量</td>
+<td style="text-align:center">phiUp</td>
+<td style="text-align:center">167</td>
+<td style="text-align:center">$\frac M {LT^2}$</td>
+<td style="text-align:center">$(\alpha\phi_{f+}+\omega_f)[\rho\mathbf u]_+ \\ + ((1-\alpha)\phi_{f-}-\omega_f)[\rho\mathbf u]_- \\ +(\alpha p_++(1-\alpha)p_-)\mathbf S_f$</td>
+<td style="text-align:right">无</td>
+<td style="text-align:left">界面数值重构的动量通量</td>
 </tr>
 <tr>
-<td>tauMC</td>
-<td>176</td>
-<td>$\frac{M}{LT^2}$</td>
-<td>$\mu_{eff}[(\nabla\mathbf u)^T - \frac 2 3 (\nabla\cdot\mathbf u) \mathbf I]$</td>
-<td>4</td>
-<td>粘性应力的deferred correction显式部分</td>
+<td style="text-align:center">tauMC</td>
+<td style="text-align:center">176</td>
+<td style="text-align:center">$\frac{M}{LT^2}$</td>
+<td style="text-align:center">$\mu_{eff}[(\nabla\mathbf u)^T - \frac 2 3 (\nabla\cdot\mathbf u) \mathbf I]$</td>
+<td style="text-align:right">4</td>
+<td style="text-align:left">粘性应力的deferred correction显式部分</td>
 </tr>
 </tbody>
 </table>
@@ -983,8 +983,17 @@ w_f = \frac{|\mathbf{S}_f\cdot\mathbf{d}_{fN}|}{|\mathbf{S}_f\cdot\mathbf{d}_{}|
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -1141,6 +1150,22 @@ w_f = \frac{|\mathbf{S}_f\cdot\mathbf{d}_{fN}|}{|\mathbf{S}_f\cdot\mathbf{d}_{}|
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#rhoCentralFoam解析"><span class="nav-text">rhoCentralFoam解析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#概念"><span class="nav-text">概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#半隐式分离求解器"><span class="nav-text">半隐式分离求解器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#界面数值通量的处理和实现"><span class="nav-text">界面数值通量的处理和实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#权重以及文章中公式的错误"><span class="nav-text">权重以及文章中公式的错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fvc-div和fvc-ddt的量纲问题"><span class="nav-text">fvc::div和fvc::ddt的量纲问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总体算法"><span class="nav-text">总体算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#粘性应力项"><span class="nav-text">粘性应力项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#关于可压缩流粘性应力、第二粘性系数、体积粘性"><span class="nav-text">关于可压缩流粘性应力、第二粘性系数、体积粘性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Stokes-假设"><span class="nav-text">Stokes 假设</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#粘性项的FVM编程实践"><span class="nav-text">粘性项的FVM编程实践</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#变量名对照"><span class="nav-text">变量名对照</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#感悟"><span class="nav-text">感悟</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#注释的代码"><span class="nav-text">注释的代码</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#从rhoCentralFoam中得到的启示"><span class="nav-text">从rhoCentralFoam中得到的启示</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
