@@ -9,8 +9,8 @@
         <category>docker</category>
       </categories>
       <tags>
-        <tag>FEniCS</tag>
         <tag>docker</tag>
+        <tag>FEniCS</tag>
       </tags>
   </entry>
   <entry>
@@ -76,8 +76,8 @@
         <category>OpenFOAM</category>
       </categories>
       <tags>
-        <tag>docker</tag>
         <tag>OpenFOAM</tag>
+        <tag>docker</tag>
       </tags>
   </entry>
   <entry>
