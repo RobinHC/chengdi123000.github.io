@@ -499,7 +499,7 @@
 <ul>
 <li><p>半隐式的意思是代码中只有部分项是隐式的，而另一些项是显式的，参考文献<a href="people.clarkson.edu/~sfulton/pubs/sitd.pdf">Semi-Implicit Time Differencing</a>认为半隐式格式的时间步长其实不太有较大优势，除非显式部分的能量占比很小。</p>
 <ul>
-<li>这种半隐式体现在不同的项上，比如粘性项：<br>$\mathbf \tau = \nabla\cdot(\mu \nabla \mathbf u )+\mathbf\tau_{MC}=  { \nabla\cdot(\mu \nabla \mathbf u ) }^{n+1} +{ (\nabla\mathbf u)^T - \frac 2 3 (\nabla\cdot\mathbf u) \mathbf I}^{n}$<ul>
+<li>这种半隐式体现在不同的项上，比如粘性项：<br>$\mathbf \tau = \nabla\cdot(\mu \nabla \mathbf u )+\mathbf\tau_{MC}=  \{ \nabla\cdot(\mu \nabla \mathbf u ) \}^{n+1} +\{ (\nabla\mathbf u)^T - \frac 2 3 (\nabla\cdot\mathbf u) \mathbf I\}^{n}$<ul>
 <li>没有转置的第一项就可以隐式离散，但是后面的就不行，由于OpenFOAM实现方式的限制，暂时只能用显式离散。</li>
 </ul>
 </li>
@@ -741,7 +741,7 @@ w_f = \frac{|\mathbf{S}_f\cdot\mathbf{d}_{fN}|}{|\mathbf{S}_f\cdot\mathbf{d}_{}|
 <td>aSf</td>
 <td>123</td>
 <td>$L^3/T$</td>
-<td>$\omega_f= -\alpha\psi_{f-} \ =-\frac{\psi_{f+}\psi_{f-}}{\psi_{f+}+\psi_{f-}}$</td>
+<td>$\omega_f= -\alpha\psi_{f-} \\ =-\frac{\psi_{f+}\psi_{f-}}{\psi_{f+}+\psi_{f-}}$</td>
 <td>10-KNP</td>
 <td>公式10-KNP展开，扩散体积通量，对于物质导数中的对流项是必须的，可与公式13对照；在KT格式中有所不同</td>
 </tr>
@@ -797,7 +797,7 @@ w_f = \frac{|\mathbf{S}_f\cdot\mathbf{d}_{fN}|}{|\mathbf{S}_f\cdot\mathbf{d}_{}|
 <td>phi</td>
 <td>159</td>
 <td>$\frac M T$</td>
-<td>$(\alpha\phi_{f+}+\omega_f)\rho_+ \ + ((1-\alpha)\phi_{f-}-\omega_f)\rho_{-}$</td>
+<td>$(\alpha\phi_{f+}+\omega_f)\rho_+ \\ + ((1-\alpha)\phi_{f-}-\omega_f)\rho_{-}$</td>
 <td>无</td>
 <td>界面数值重构的质量通量</td>
 </tr>
@@ -805,7 +805,7 @@ w_f = \frac{|\mathbf{S}_f\cdot\mathbf{d}_{fN}|}{|\mathbf{S}_f\cdot\mathbf{d}_{}|
 <td>phiUp</td>
 <td>167</td>
 <td>$\frac M {LT^2}$</td>
-<td>$(\alpha\phi_{f+}+\omega_f)[\rho\mathbf u]_+ \ + ((1-\alpha)\phi_{f-}-\omega_f)[\rho\mathbf u]_- \ +(\alpha p_++(1-\alpha)p_-)\mathbf S_f$</td>
+<td>$(\alpha\phi_{f+}+\omega_f)[\rho\mathbf u]_+ \\ + ((1-\alpha)\phi_{f-}-\omega_f)[\rho\mathbf u]_- \\ +(\alpha p_++(1-\alpha)p_-)\mathbf S_f$</td>
 <td>无</td>
 <td>界面数值重构的动量通量</td>
 </tr>
@@ -983,17 +983,8 @@ w_f = \frac{|\mathbf{S}_f\cdot\mathbf{d}_{fN}|}{|\mathbf{S}_f\cdot\mathbf{d}_{}|
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -1150,22 +1141,6 @@ w_f = \frac{|\mathbf{S}_f\cdot\mathbf{d}_{fN}|}{|\mathbf{S}_f\cdot\mathbf{d}_{}|
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#rhoCentralFoam解析"><span class="nav-number">1.</span> <span class="nav-text">rhoCentralFoam解析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#概念"><span class="nav-number">1.1.</span> <span class="nav-text">概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#半隐式分离求解器"><span class="nav-number">1.1.1.</span> <span class="nav-text">半隐式分离求解器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#界面数值通量的处理和实现"><span class="nav-number">1.1.2.</span> <span class="nav-text">界面数值通量的处理和实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#权重以及文章中公式的错误"><span class="nav-number">1.2.</span> <span class="nav-text">权重以及文章中公式的错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fvc-div和fvc-ddt的量纲问题"><span class="nav-number">1.3.</span> <span class="nav-text">fvc::div和fvc::ddt的量纲问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总体算法"><span class="nav-number">1.4.</span> <span class="nav-text">总体算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#粘性应力项"><span class="nav-number">1.5.</span> <span class="nav-text">粘性应力项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#关于可压缩流粘性应力、第二粘性系数、体积粘性"><span class="nav-number">1.5.1.</span> <span class="nav-text">关于可压缩流粘性应力、第二粘性系数、体积粘性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Stokes-假设"><span class="nav-number">1.5.2.</span> <span class="nav-text">Stokes 假设</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#粘性项的FVM编程实践"><span class="nav-number">1.5.3.</span> <span class="nav-text">粘性项的FVM编程实践</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#变量名对照"><span class="nav-number">2.</span> <span class="nav-text">变量名对照</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#感悟"><span class="nav-number">3.</span> <span class="nav-text">感悟</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#注释的代码"><span class="nav-number">4.0.1.</span> <span class="nav-text">注释的代码</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#从rhoCentralFoam中得到的启示"><span class="nav-number">5.</span> <span class="nav-text">从rhoCentralFoam中得到的启示</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       

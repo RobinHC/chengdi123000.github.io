@@ -1252,17 +1252,8 @@ K_c = 1 - \min\left( \frac {|\phi^c|}{|\phi^{n-1}|+\epsilon}, 1\right)</script><
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -1419,22 +1410,6 @@ K_c = 1 - \min\left( \frac {|\phi^c|}{|\phi^{n-1}|+\epsilon}, 1\right)</script><
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SIMPLE-PISO和PIMPLE算法"><span class="nav-number">1.</span> <span class="nav-text">SIMPLE, PISO和PIMPLE算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SIMPLE算法"><span class="nav-number">1.2.</span> <span class="nav-text">SIMPLE算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#压力联系方程之到底是哪个方程"><span class="nav-number">1.2.1.</span> <span class="nav-text">压力联系方程之到底是哪个方程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#FAQ"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">FAQ</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Semi-Implicit-Method半隐式方法"><span class="nav-number">1.2.2.</span> <span class="nav-text">Semi-Implicit-Method半隐式方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于consistent"><span class="nav-number">1.2.3.</span> <span class="nav-text">关于consistent</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关于H1和H的区别"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">关于H1和H的区别</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他"><span class="nav-number">1.2.4.</span> <span class="nav-text">其他</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Rhie-Chow插值"><span class="nav-number">1.3.</span> <span class="nav-text">Rhie-Chow插值</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#面心速度的作用"><span class="nav-number">1.3.1.</span> <span class="nav-text">面心速度的作用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PISO算法"><span class="nav-number">1.4.</span> <span class="nav-text">PISO算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#其他-1"><span class="nav-number">1.4.1.</span> <span class="nav-text">其他</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#solutionControl及其子类的继承关系"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">solutionControl及其子类的继承关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#松弛"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">松弛</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PIMPLE算法"><span class="nav-number">1.5.</span> <span class="nav-text">PIMPLE算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PIMPLE里的三层循环"><span class="nav-number">1.5.1.</span> <span class="nav-text">PIMPLE里的三层循环</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些编程细节"><span class="nav-number">1.6.</span> <span class="nav-text">一些编程细节</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#solutionControl及其子类的变量命名规范"><span class="nav-number">1.6.1.</span> <span class="nav-text">solutionControl及其子类的变量命名规范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#simpleFoam中phi变量的更新。"><span class="nav-number">1.6.2.</span> <span class="nav-text">simpleFoam中phi变量的更新。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于adjustPhi-和-setReference"><span class="nav-number">1.6.3.</span> <span class="nav-text">关于adjustPhi, 和 setReference</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方程多解问题：setReference"><span class="nav-number">1.6.3.1.</span> <span class="nav-text">方程多解问题：setReference</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方程相容性问题：adjustPhi"><span class="nav-number">1.6.3.2.</span> <span class="nav-text">方程相容性问题：adjustPhi</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于constrainPressure和constrainHbyA"><span class="nav-number">1.6.4.</span> <span class="nav-text">关于constrainPressure和constrainHbyA</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#constrainPressure用于调整压力p的边界"><span class="nav-number">1.6.4.1.</span> <span class="nav-text">constrainPressure用于调整压力p的边界</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#constrainHbyA-tHbyA-U-p-用于返回调整后的tHbyANew变量"><span class="nav-number">1.6.4.2.</span> <span class="nav-text">constrainHbyA(tHbyA,U,p)用于返回调整后的tHbyANew变量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于fvc-ddtCorr-和fvc-ddtPhiCorr"><span class="nav-number">1.6.5.</span> <span class="nav-text">关于fvc::ddtCorr()和fvc::ddtPhiCorr()</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Jasak的搞法"><span class="nav-number">1.6.5.1.</span> <span class="nav-text">Jasak的搞法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#投影法"><span class="nav-number">1.6.5.2.</span> <span class="nav-text">投影法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OpenFOAMplus的搞法"><span class="nav-number">1.6.5.3.</span> <span class="nav-text">OpenFOAMplus的搞法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于p-pFinal的选择"><span class="nav-number">1.6.6.</span> <span class="nav-text">关于p,pFinal的选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于收敛判据和求解控制"><span class="nav-number">1.6.7.</span> <span class="nav-text">关于收敛判据和求解控制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">1.7.</span> <span class="nav-text">参考资料</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
