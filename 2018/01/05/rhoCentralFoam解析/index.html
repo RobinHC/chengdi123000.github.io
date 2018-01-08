@@ -543,7 +543,10 @@ w_f = \frac{|\mathbf{S}_f\cdot\mathbf{d}_{fN}|}{|\mathbf{S}_f\cdot\mathbf{d}_{}|
 <p>翻译成公式是：</p>
 <script type="math/tex; mode=display">
 \text{fvc::ddt}(\alpha)=\frac{1}{\Delta t}(\alpha^n-\alpha^{n-1})</script><p>这样OpenFOAM的代码中的公式量纲才是正确的。</p>
-<p>参考：<a href="http://www.cfd-china.com/topic/703/fvc-div%E7%9A%84%E5%89%8D%E5%90%8E%E9%87%8F%E7%BA%B2%E5%85%B3%E7%B3%BB%E5%88%B0%E5%BA%95%E6%98%AF%E5%95%A5" target="_blank" rel="noopener">http://www.cfd-china.com/topic/703/fvc-div%E7%9A%84%E5%89%8D%E5%90%8E%E9%87%8F%E7%BA%B2%E5%85%B3%E7%B3%BB%E5%88%B0%E5%BA%95%E6%98%AF%E5%95%A5</a></p>
+<p>参考<sup><a href="#fn_1" id="reffn_1">1</a></sup></p>
+<blockquote id="fn_1">
+<sup>1</sup>. <a href="http://www.cfd-china.com/topic/703/fvc-div%E7%9A%84%E5%89%8D%E5%90%8E%E9%87%8F%E7%BA%B2%E5%85%B3%E7%B3%BB%E5%88%B0%E5%BA%95%E6%98%AF%E5%95%A5" target="_blank" rel="noopener">fvc::div的前后量纲关系到底是啥？</a><a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
+</blockquote>
 <p>个人认为OpenFOAM很多时候的做法是为了减少计算量：</p>
 <ul>
 <li>比如喜欢用界面通量，避免存面矢量场，用面标量场就够了；</li>
@@ -553,12 +556,21 @@ w_f = \frac{|\mathbf{S}_f\cdot\mathbf{d}_{fN}|}{|\mathbf{S}_f\cdot\mathbf{d}_{}|
 <ul>
 <li>while t&lt;$t_{end}​$ do<ul>
 <li>t := t+ dt</li>
-<li>利用van Leer限制器，从单元场$\rho,\mathbf{\hat u},T​$中插值得到$\rho<em>{f\pm},\mathbf{\hat u}</em>{f\pm},T_{f\pm}​$</li>
-<li>计算$\mathbf{u}<em>{f\pm}=\mathbf{\hat u}</em>{f\pm}/\rho<em>{f\pm},p</em>{f\pm}=\rho<em>{f\pm} RT</em>{f\pm},\phi<em>{f\pm}=\mathbf{S}_f\cdot\mathbf{u}</em>{f\pm},c<em>{f\pm}=\sqrt{\gamma R T</em>{f\pm}}$</li>
+<li>利用van Leer限制器，从单元场$\rho,\mathbf{\hat u},T$中插值得<ul>
+<li>到 $\rho_{f \pm},\mathbf{\hat u}_{f\pm},T_{f\pm}$</li>
+</ul>
+</li>
+<li>计算<ul>
+<li>$\mathbf{u}_{f\pm}=\mathbf{\hat u}_{f\pm}/\rho_{f\pm}$</li>
+<li>$p_{f\pm}=\rho_{f\pm} RT_{f\pm}$</li>
+<li>$\phi_{f\pm}=\mathbf{S}_f\cdot\mathbf{u}_{f\pm}$</li>
+<li>$c_{f\pm}=\sqrt{\gamma R T_{f\pm} }$</li>
+</ul>
+</li>
 <li>根据公式7-13计算对流导数和$\nabla p$</li>
-<li>更新$\mathbf{T}_{exp},\mu,k​$</li>
+<li>更新$\mathbf{T}_{exp},\mu,k$</li>
 <li>根据方程1求解密度$\rho$</li>
-<li>根据方程18求解质量流率$\mathbf{\hat u}​$(无粘动量预测步)</li>
+<li>根据方程18求解质量流率$\mathbf{\hat u}$(无粘动量预测步)</li>
 <li>更新$\mathbf{u}=\mathbf{\hat u}/\rho​$</li>
 <li>根据方程19求解速度$\mathbf{u}​$(扩散速度修正步)</li>
 <li>根据方程20求解能量流率$\hat{E}​$(无粘能量预测步)</li>
@@ -572,13 +584,13 @@ w_f = \frac{|\mathbf{S}_f\cdot\mathbf{d}_{fN}|}{|\mathbf{S}_f\cdot\mathbf{d}_{}|
 <p>但是文章是在OpenFOAM 1.5中实现的，在现在的OpenFOAM中的rhoCentralFoam实现有点儿不一样的地方，比如能量方程的求解不是求温度T了，而是直接求解内能e。</p>
 <h2 id="粘性应力项"><a href="#粘性应力项" class="headerlink" title="粘性应力项"></a>粘性应力项</h2><p>根据文章内容和公式4，<code>rhoCentralFoam</code>没有考虑体积粘性，文中的公式为：</p>
 <script type="math/tex; mode=display">
-\mathbf T = -2\mu \times\text{dev}(\mathbf D) 
+\mathbf T = -2\mu \times\text{dev}(\mathbf D)  \\
 
-= -2\mu \times\text{dev}(\frac 1 2 [\nabla \mathbf u+\nabla (\mathbf u)^T])
+= -2\mu \times\text{dev}(\frac 1 2 [\nabla \mathbf u+\nabla (\mathbf u)^T])\\
 
-= -2\mu\times \{\frac 1 2 [\nabla \mathbf u+\nabla (\mathbf u)^T]-\frac 1 3 tr(\nabla \mathbf u+\nabla (\mathbf u)^T)\mathbf I\}
+= -2\mu\times \{\frac 1 2 [\nabla \mathbf u+\nabla (\mathbf u)^T]-\frac 1 3 tr(\nabla \mathbf u+\nabla (\mathbf u)^T)\mathbf I\}\\
 
-= -\mu[\nabla \mathbf u+\nabla (\mathbf u)^T]-\frac 2 3\mu(\nabla\cdot \mathbf u) \mathbf I
+= -\mu[\nabla \mathbf u+\nabla (\mathbf u)^T]-\frac 2 3\mu(\nabla\cdot \mathbf u) \mathbf I\\
 
 = -\mu\nabla \mathbf u-\mu[\nabla (\mathbf u)^T+\frac 2 3 (\nabla\cdot \mathbf u) \mathbf I]</script><p>这个最终公式是有点奇怪的，一是它的符号和常规的推导是相反的，通常粘性应力是正的。二是它的形式和可压缩流的粘性应力有一定区别。</p>
 <h3 id="关于可压缩流粘性应力、第二粘性系数、体积粘性"><a href="#关于可压缩流粘性应力、第二粘性系数、体积粘性" class="headerlink" title="关于可压缩流粘性应力、第二粘性系数、体积粘性"></a>关于可压缩流粘性应力、第二粘性系数、体积粘性</h3><p>参考文献<a href="https://link.springer.com/article/10.1007/s00707-015-1380-9" target="_blank" rel="noopener">A note on Stokes’ hypothesis</a>，<br>总应力$\mathbf S$可以表示为：</p>
@@ -681,7 +693,7 @@ w_f = \frac{|\mathbf{S}_f\cdot\mathbf{d}_{fN}|}{|\mathbf{S}_f\cdot\mathbf{d}_{}|
 <td>phiv_pos</td>
 <td>93</td>
 <td>$L^3/T$</td>
-<td>$\phi<em>{f+}=\mathbf{u}</em>+\cdot \mathbf{S}_{f} $</td>
+<td>$\phi_{f+}=\mathbf{u}_+\cdot \mathbf{S}_{f} $</td>
 <td>7</td>
 <td>正向体积流量</td>
 </tr>
@@ -689,7 +701,7 @@ w_f = \frac{|\mathbf{S}_f\cdot\mathbf{d}_{fN}|}{|\mathbf{S}_f\cdot\mathbf{d}_{}|
 <td>phiv_neg</td>
 <td>94</td>
 <td>$L^3/T$</td>
-<td>$\phi<em>{f-}=\mathbf{u}</em>-\cdot \mathbf{S}_{f} $</td>
+<td>$\phi_{f-}=\mathbf{u}_-\cdot \mathbf{S}_{f} $</td>
 <td>7</td>
 <td>反向体积流量</td>
 </tr>
@@ -713,7 +725,7 @@ w_f = \frac{|\mathbf{S}_f\cdot\mathbf{d}_{fN}|}{|\mathbf{S}_f\cdot\mathbf{d}_{}|
 <td>a_pos</td>
 <td>119</td>
 <td>$1$</td>
-<td>$\alpha=\frac{\psi<em>{f+}}{\psi</em>{f+}+\psi_{f-}}$</td>
+<td>$\alpha=\frac{\psi_{f+}}{\psi_{f+}+\psi_{f-}}$</td>
 <td>9-KNP</td>
 <td>KNP格式中的$\alpha$，在KT格式中为1/2</td>
 </tr>
@@ -721,7 +733,7 @@ w_f = \frac{|\mathbf{S}_f\cdot\mathbf{d}_{fN}|}{|\mathbf{S}_f\cdot\mathbf{d}_{}|
 <td>amaxSf</td>
 <td>121</td>
 <td>$L^3/T$</td>
-<td>$\max(\psi<em>{f+},\psi</em>{f-})$</td>
+<td>$\max(\psi_{f+},\psi_{f-})$</td>
 <td>无</td>
 <td>编程需要构造出来的一个变量</td>
 </tr>
@@ -729,7 +741,7 @@ w_f = \frac{|\mathbf{S}_f\cdot\mathbf{d}_{fN}|}{|\mathbf{S}_f\cdot\mathbf{d}_{}|
 <td>aSf</td>
 <td>123</td>
 <td>$L^3/T$</td>
-<td>$\omega<em>f=-\alpha\psi</em>{f-}=-\frac{\psi<em>{f+}\psi</em>{f-}}{\psi<em>{f+}+\psi</em>{f-}}$</td>
+<td>$\omega_f= -\alpha\psi_{f-} \ =-\frac{\psi_{f+}\psi_{f-}}{\psi_{f+}+\psi_{f-}}$</td>
 <td>10-KNP</td>
 <td>公式10-KNP展开，扩散体积通量，对于物质导数中的对流项是必须的，可与公式13对照；在KT格式中有所不同</td>
 </tr>
@@ -777,7 +789,7 @@ w_f = \frac{|\mathbf{S}_f\cdot\mathbf{d}_{fN}|}{|\mathbf{S}_f\cdot\mathbf{d}_{}|
 <td>amaxSf(第二次使用)</td>
 <td>141</td>
 <td>$L^3/T$</td>
-<td>$\max(\mid\alpha\phi<em>{f+}+\omega_f\mid,\mid(1-\alpha)\phi</em>{f-}-\omega_f\mid)$</td>
+<td><script type="math/tex">\max(\mid\alpha\phi_{f+}+ \omega_f\mid, \\ \mid(1-\alpha)\phi_{f-}-\omega_f\mid)</script></td>
 <td>无</td>
 <td>中心格式预测的幅值最大的数值单向通量</td>
 </tr>
@@ -785,7 +797,7 @@ w_f = \frac{|\mathbf{S}_f\cdot\mathbf{d}_{fN}|}{|\mathbf{S}_f\cdot\mathbf{d}_{}|
 <td>phi</td>
 <td>159</td>
 <td>$\frac M T$</td>
-<td>$(\alpha\phi<em>{f+}+\omega_f)\rho</em>++ ((1-\alpha)\phi<em>{f-}-\omega_f)\rho</em>{-}$</td>
+<td>$(\alpha\phi_{f+}+\omega_f)\rho_+ \ + ((1-\alpha)\phi_{f-}-\omega_f)\rho_{-}$</td>
 <td>无</td>
 <td>界面数值重构的质量通量</td>
 </tr>
@@ -793,7 +805,7 @@ w_f = \frac{|\mathbf{S}_f\cdot\mathbf{d}_{fN}|}{|\mathbf{S}_f\cdot\mathbf{d}_{}|
 <td>phiUp</td>
 <td>167</td>
 <td>$\frac M {LT^2}$</td>
-<td>$(\alpha\phi<em>{f+}+\omega_f)[\rho\mathbf u]</em>+ \+ ((1-\alpha)\phi<em>{f-}-\omega_f)[\rho\mathbf u]</em>- \+(\alpha p<em>++(1-\alpha)p</em>-)\mathbf S_f$</td>
+<td>$(\alpha\phi_{f+}+\omega_f)[\rho\mathbf u]_+ \ + ((1-\alpha)\phi_{f-}-\omega_f)[\rho\mathbf u]_- \ +(\alpha p_++(1-\alpha)p_-)\mathbf S_f$</td>
 <td>无</td>
 <td>界面数值重构的动量通量</td>
 </tr>
@@ -897,8 +909,8 @@ w_f = \frac{|\mathbf{S}_f\cdot\mathbf{d}_{fN}|}{|\mathbf{S}_f\cdot\mathbf{d}_{}|
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/01/05/OpenFOAM的不可压缩流算法/" rel="next" title="OpenFOAM的不可压缩流算法">
-                <i class="fa fa-chevron-left"></i> OpenFOAM的不可压缩流算法
+              <a href="/2018/01/05/MASA的安装/" rel="next" title="MASA的安装">
+                <i class="fa fa-chevron-left"></i> MASA的安装
               </a>
             
           </div>
@@ -906,6 +918,10 @@ w_f = \frac{|\mathbf{S}_f\cdot\mathbf{d}_{fN}|}{|\mathbf{S}_f\cdot\mathbf{d}_{}|
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/05/OpenFOAM的不可压缩流算法/" rel="prev" title="OpenFOAM的不可压缩流算法">
+                OpenFOAM的不可压缩流算法 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
