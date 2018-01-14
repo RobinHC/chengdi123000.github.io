@@ -1,0 +1,1833 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="PAl6hcQ6eWgvhZYCbNCKQmSXqnFPWKb1obkjIMZ4jm0" />
+
+
+
+  <meta name="msvalidate.01" content="36D5F61BC8AB6B5FF7E077EEA57549E2" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.0.0" rel="stylesheet" type="text/css" />
+
+
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=6.0.0">
+
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+  
+
+
+  <link rel="alternate" href="/atom.xml" title="冰水混合物" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="keywords" content="OpenFOAM, CFD, HPC, combustion">
+<meta property="og:type" content="website">
+<meta property="og:title" content="冰水混合物">
+<meta property="og:url" content="http://chengdi123000.github.io/404.html">
+<meta property="og:site_name" content="冰水混合物">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-01-05T15:31:57.581Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="冰水混合物">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.0.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://chengdi123000.github.io/404.html"/>
+
+
+
+
+
+  <title>FEniCS的概念笔记 | 冰水混合物</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-106616479-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ca4e0f4ba2a6e2e114ba4672f3d18c0a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"> <div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">冰水混合物</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">程迪的博客</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+
+            
+              首页
+            
+
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+
+            
+              关于
+            
+
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+
+            
+              标签
+            
+
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+
+            
+              分类
+            
+
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+
+            
+              归档
+            
+
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+
+            
+              日程表
+            
+
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+
+            
+              站点地图
+            
+
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+
+            
+              公益404
+            
+
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://chengdi123000.github.io/2018/01/05/FEniCS概念笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="程迪">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.JPG">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="冰水混合物">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">FEniCS的概念笔记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-05T21:16:30+08:00">2018-01-05</time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/FEniCS/" itemprop="url" rel="index">
+                    <span itemprop="name">FEniCS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/05/FEniCS概念笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/01/05/FEniCS概念笔记/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>FEniCS的概念: 函数空间，弱形式，边界条件，伴随。</p>
+<a id="more"></a>
+<h1 id="FEniCS的概念笔记"><a href="#FEniCS的概念笔记" class="headerlink" title="FEniCS的概念笔记"></a>FEniCS的概念笔记</h1><p>FEniCS学术味太重，看<sup><a href="#fn_handbook" id="reffn_handbook">handbook</a></sup> 都要吐了。不过好处是怎么实现的给你讲得明明白白的，而且逻辑比较一致。</p>
+<blockquote id="fn_handbook">
+<sup>handbook</sup>. <a href="https://fenicsproject.org/pub/documents/book/fenics-book-2010-05-07.pdf" target="_blank" rel="noopener">FEniCS Handbook </a><a href="#reffn_handbook" title="Jump back to footnote [handbook] in the text."> &#8617;</a>
+</blockquote>
+<h2 id="有限元思路"><a href="#有限元思路" class="headerlink" title="有限元思路"></a>有限元思路</h2><p>有限元思路的理解有很多种。</p>
+<h3 id="加权余量的duck-typing-思路"><a href="#加权余量的duck-typing-思路" class="headerlink" title="加权余量的duck typing 思路"></a>加权余量的duck typing 思路</h3><blockquote>
+<p>“If it walks like a duck and it quacks like a duck, then it must be a duck.”</p>
+</blockquote>
+<p>同样的</p>
+<blockquote>
+<p>如果一个解左看像真解，右看像真解，那么我们就当它是真解。</p>
+</blockquote>
+<p>这个思路导出的就是加权余量法。如果不同权函数的加权积分等于0，那么就算找到真解了。</p>
+<p>这个思路的问题是没有对权函数的选取提出指导意见。但是要求权函数尽量相互之间不一样（数学意义上最不一样的往往就是正交函数系！正交=垂直，相当于上下看、左右看再前后看）</p>
+<h3 id="函数空间思路"><a href="#函数空间思路" class="headerlink" title="函数空间思路"></a>函数空间思路</h3><p>这个思路更数学化。</p>
+<ul>
+<li>首先我们假设解是存在于某个解空间$V$时的，但是这个空间太大（<strong>无限维</strong>），我们找不到。</li>
+<li>于是我们就构造一个<strong>有限维度</strong>解空间的子空间$V_h\subset V$，叫<strong>有限</strong>元空间，在里面找。<ul>
+<li>因为这个空间是我们构造的，所以可以对其进行很多控制，比如选择网格大小、多项式阶数什么的。</li>
+<li>由于有限元空间是解空间的子空间，所以我们对解空间证明了一些结论（比如存在唯一收敛稳定性啥的），在有限元空间也是成立的。<ul>
+<li>但是这是有例外的，比如混合有限元解鞍点问题时，原空间满足LBB条件，有限元空间如果选取不当可能不满足LBB条件。</li>
+<li>所以构造Stokes方程的混合有限元的空间时，LBB条件就成了<strong>指导性原则</strong>。</li>
+</ul>
+</li>
+<li>还有例外就是non-conformal FEM，有限元空间和解空间并不一致，比如DG，是通过inteface flux弱耦合进去的。</li>
+</ul>
+</li>
+<li>有了有限元空间，我们再构造试函数空间$\hat V​$，为了简化，通常取$\hat V = V​$。这样能少占用一些内存啥的。<ul>
+<li>恰好，一些数学证明对于很多方程（自伴随算子什么的），这么构造试函数可以带来很多优良的特性。</li>
+<li>那就这么干了。</li>
+<li>例外：Petrov-Galerkin，$\hat V \ne V$</li>
+</ul>
+</li>
+<li>例外：广义Galerkin方法，弱形式中的算子$a(u,v)$也是可以变的（$a_h(u,v)$），只要收敛就好。</li>
+</ul>
+<h2 id="函数空间"><a href="#函数空间" class="headerlink" title="函数空间"></a>函数空间</h2><p>函数空间<sup><a href="#fn_function_space" id="reffn_function_space">function_space</a></sup>太重要了，如果说FVM是玩各种重构，那么FEM就是玩各种函数空间（FDM似乎是玩各种差分、导数和Taylor展开）。</p>
+<blockquote id="fn_function_space">
+<sup>function_space</sup>. <a href="http://www4.ncsu.edu/~zhilin/TEACHING/MA587/chap7.pdf" target="_blank" rel="noopener">Theoretical Foundations of the Finite Element Method</a><a href="#reffn_function_space" title="Jump back to footnote [function_space] in the text."> &#8617;</a>
+</blockquote>
+<h3 id="按性质分类"><a href="#按性质分类" class="headerlink" title="按性质分类"></a>按性质分类</h3><ul>
+<li>线性空间：linear space，又叫vector space，加减数乘之后还在里面。</li>
+<li>距离空间（metric space）：定义了距离（距离是二元算符）的空间<ul>
+<li>距离：$d(u,v)$满足三条性质的叫metric <ul>
+<li>距离非负</li>
+<li>距离为0，二者相等</li>
+<li>三角不等式$d(u,v+w)\le d(u,v)+d(u,w)$</li>
+</ul>
+</li>
+<li>常见的距离对于数组来说就是差的某种模，比如这个：$\sum_i{|u_i-v_i|}​$</li>
+<li>距离对于函数空间而言也可以是类似的，比如$d(u,v)=\max_{x\in\Omega}|u(x)-v(x)|​$。</li>
+</ul>
+</li>
+<li>范数空间（normed space），范数是一元算符<ul>
+<li>范数：$||u(x)||=d(u,\theta)=\max_{x\in\Omega}|u(x)|$，其中$\theta$是0元素，且满足一下性质：<ul>
+<li>非负，且$||u(x)||=0\equiv u(x)=0$</li>
+<li><strong>齐次性</strong> $||\alpha u(x)||=|\alpha| ||u(x)||$</li>
+<li>三角不等式$||u+v||\le ||u||+||v||$</li>
+</ul>
+</li>
+<li>范数可以诱导出距离：$d(u,v)= ||u-v||$。</li>
+<li><strong>齐次性</strong> 是范数所特有的！<ul>
+<li>范数可以诱导出非齐次的距离：$d(x,y) = \frac{||x-y||}{1+||x-y||}​$</li>
+<li>这个距离始终小于1，且是平移不变的。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>完备（completeness）：柯西数列收敛<ul>
+<li>对于metric space而言。</li>
+<li>收敛（convergence）：$\lim_{n\to+\infty}{x_n} = x$表示对任意$\epsilon&gt;0$，存在N使得$d(x_n,x)&lt;\epsilon$对任意$n&gt;N$成立 。也就是这堆数<strong>与$x$之间越来越近</strong>。 </li>
+<li>柯西数列Cauchy sequence：对任意$\epsilon&gt;0$，存在N使得$d(x_n,x_{n-1})&lt;\epsilon$对任意$n&gt;N$成立 。也就是这堆数<strong>相互之间</strong>越来越近。</li>
+<li>比如实数空间就是完备的。</li>
+</ul>
+</li>
+<li>完备范数空间（Banach空间）<ul>
+<li>完备范数可以诱导完备距离</li>
+<li>完备距离之所以重要，是因为我们可以用变细的网格和更高的阶数（$h_n\to 0, \Delta t \to 0, p\to +\infty$）构造数值解的柯西列，只要它们相互之间越来越近，那么可以保证，它一定收敛于Banach空间中的<strong>真解</strong>。<ul>
+<li>真解我们往往是不知道的，所以对真解的误差（Error）往往是我们无法衡量的。</li>
+<li>但是我们可以构造并检验柯西列的收敛性</li>
+<li>这是逼近真解的<strong>构造性算法</strong>的前提条件。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>内积空间：inner product空间<ul>
+<li>内积<ul>
+<li>共轭对称性：$(f,g)=\overline{(g,f)}$</li>
+<li>线性性：$(ax+by,z) = a(x,z)+b(y,z)$</li>
+<li>正定：$(x,y)\ge0$且$ (x,x)=0\Leftrightarrow  x=0$</li>
+<li>例如：$(f,g)=\int_\Omega{f\cdot gdx}$</li>
+</ul>
+</li>
+<li>显然，内积可以诱导出范数，从而诱导出距离。<ul>
+<li>例如：$||x||=(x,x)$，距离$d(x,y)=\frac{(x-y,x-y)}{1+(x-y,x-y)}$</li>
+</ul>
+</li>
+<li>有了内积空间，我们可以定义角度！从而可以定义<strong>正交性</strong>！<ul>
+<li>想想角度的cos值小于1，对应着Cauchy-Schwartz不等式$(u,v)\le||u||\times||v||$</li>
+</ul>
+</li>
+<li>内积可以帮助我们定义双线性形式。</li>
+<li>例子：内积对应于数组向量是点乘或者加权点乘，对应于函数则是积分或者加权积分。</li>
+</ul>
+</li>
+<li>完备内积空间：Hilbert空间<ul>
+<li>有了内积可以保证我们可以构造出一个具有正交完备性的空间元素序列</li>
+<li>这个序列就可以作为基逼近空间内的任意元素。</li>
+<li>并且这个逼近在某种意义上还是最佳逼近。<ul>
+<li>对于有限维度的Hilbert空间，有时候存在Gibbs问题。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>带导数的完备内积空间（Sobolev空间），直到n阶导数存在且术语$L^2$空间 ，标记为$H^n(\Omega)$<ul>
+<li>内积变了：<ul>
+<li>$(u,v)_{H^1(\Omega)}=\int_{\Omega}{(uv+u’v’)\text dx}$</li>
+</ul>
+</li>
+<li>此时存在$ H^1$semi-norm，比如$||\nabla u||$，这个半模有一些线性性质，但是半模等于0，这个函数可以不等于0。<ul>
+<li>CFD领域津津乐道的总变差（Total variation, TV）就类似一种一阶导数的半模。</li>
+</ul>
+</li>
+<li>Sobolev嵌入定理：$H^{m+j} \subset C^j$，如果$2m&gt;n$的话 。其中 $n$是空间维度。<ul>
+<li>2维：m=2，就是说$u\in H^2\subset C^0$，$u$是连续的，但是$u_x$不一定连续，但是$u_x$一定平方可积。</li>
+<li>3维：m=2。结论相同。</li>
+</ul>
+</li>
+<li>$H^m_0(\Omega)$的下标$_0$表示齐次边界条件的Sobolev空间（严格来说，是函数的trace，即在边界处的值为0）。通常用来表示模型问题的解空间。</li>
+</ul>
+</li>
+<li>不连续的Sobolev空间（Broken Sobolev空间）<sup><a href="#fn_broken_sobolev" id="reffn_broken_sobolev">broken_sobolev</a></sup><ul>
+<li>Sobolev空间又有一个衍生产物，间断Galerkin的解就在其中，这个空间的性质决定了DG类算法的一些重要性质，如存在唯一性，误差估计等。</li>
+</ul>
+</li>
+</ul>
+<blockquote id="fn_broken_sobolev">
+<sup>broken_sobolev</sup>. <a href="https://www.researchgate.net/profile/Zhiqiang_Cai3/publication/265243578_A_Note_on_Discontinuous_Galerkin_Methods/links/5536a80b0cf218056e953013/A-Note-on-Discontinuous-Galerkin-Methods.pdf" target="_blank" rel="noopener">A Note on Discontinuous Galerkin Methods</a><a href="#reffn_broken_sobolev" title="Jump back to footnote [broken_sobolev] in the text."> &#8617;</a>
+</blockquote>
+<h3 id="其他概念"><a href="#其他概念" class="headerlink" title="其他概念"></a>其他概念</h3><ul>
+<li>伴随Adjoint：<ul>
+<li>伴随往往是指算子，比如Laplacian算子$\Delta = \nabla\cdot \nabla $就是一个算子，把一个函数映射成另一个函数</li>
+<li>对于Hilbert空间，因为定义了内积，所以$A$的伴随算子$A^<em>$的定义是：$(Ax,y)_1 = (x,A^</em>y)_2$<ul>
+<li>注意：上式左边的算子$A$可以是把 Hilbert空间2的向量$x$映射到了Hilbert空间1的向量 $Ax$，然后按照Hilbert空间1的内积$(\cdot,\cdot)_1$计算的。</li>
+<li>伴随算子是反过来的。</li>
+<li>对于两个有限坐标空间而言，算子总是可以表示为矩阵，此时$A^*=\bar A^T$，即原矩阵的厄米特矩阵（Hermitian，即共轭转置）</li>
+<li>实际上算子还需要是有界的。<ul>
+<li>有界和无界算子在很多地方差异较大。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>如果算子是自伴随（self-adjoint）的，会有很多很好的性质。比如矩阵是对称的，可以收敛更快。</li>
+<li>模算子（normal operator）：$AA^<em>=A^</em>A$，类似于单位正交距阵。<ul>
+<li>模算子都是自伴随的，反之不成立。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>对偶dual：对偶指的空间对偶<ul>
+<li>范数空间的所有连续线性泛函构成的空间，就是它的dual space。</li>
+<li>定义虽然是这样，但是由于试线性泛函，所以通常每个泛函空间的元素都可以表示为$F_{w}(f)=\int_\Omega{f(x)w(x)\text d x}$的形式，那么$w(x)$构成的空间其实也是函数空间，并且同构于那个dual space。于是这个函数空间本身就被叫做了dual space。</li>
+<li>所以dual space的空间元素本来应该是一堆泛函，但是实际上按照是一堆函数来处理。</li>
+<li>dual space的原空间是一堆函数，dual space本身又当成是一堆函数，于是可以对来对去玩更多花样。</li>
+<li>范数空间的dual是Banach空间，即使它本身不是。</li>
+<li>$L^p$的对偶空间是$L^{p’}$，$\frac{1}{p}+\frac{1}{p’}=1$，p=1和$\infty$时除外。</li>
+</ul>
+</li>
+<li>导数derivative<ul>
+<li>Gateaux derivative，方向导数的推广，原算子和得到的导数算子都不一定是线性算子。</li>
+<li>Fréchet derivative，Banach空间的导数概念，原算子不一定是线性算子，结果得到的导数算子必须是线性算子。<ul>
+<li>某个点方向导数存在，导数不一定存在。</li>
+<li>同样的，某个函数空间的某个地方Gateaux导数存在，并不代表Fréchet 导数就存在。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="按常见具体内容举例"><a href="#按常见具体内容举例" class="headerlink" title="按常见具体内容举例"></a>按常见具体内容举例</h3><ul>
+<li>数域：Field，本身就是1维的线性空间，常表示为$\mathbf F$<ul>
+<li>实数：$\mathbf R$</li>
+<li>复数：$\mathbf C$</li>
+</ul>
+</li>
+<li>坐标空间：coordinate space，就是数组排成一列（或者一行），是最基本的。通常计算机里的vector, list之类的东西应该归属于坐标空间，虽然名字也叫向量。<ul>
+<li>实数坐标空间：real coordinate space，符号：$\mathbf{R}^n​$，常用来表示n维欧氏空间（Euclidean space）</li>
+<li>复数坐标空间：complex coordinate space，符号$\mathbf{C}^n$</li>
+<li>无限维坐标空间：$\mathbf F^\infty $</li>
+</ul>
+</li>
+<li>矩阵：数域组成的m*n矩阵，表示维$\mathbf F^{m\times n}$</li>
+<li>多项式空间：多项式的系数为数域$\mathbf F$，且变量为$x$时，记作$\mathbf F[x]$，可以扩展到多变量$\mathbf F[x_1,x_2, \dots]$<ul>
+<li>最常用的实系数多项式空间表示为$\mathbf P_n$，$n$表示最高阶数（degree）</li>
+<li>多项式空间也是电脑最喜欢用的空间，因为只涉及到加减乘法，算起来快，参考以下图。</li>
+<li><img src="http://latkin.org/blog/wp-content/uploads/2014/11/FLOPchart1.png" alt="benchmark results"></li>
+<li>关于统计Flops，参考<a href="http://icl.utk.edu/papi/" target="_blank" rel="noopener">http://icl.utk.edu/papi/</a></li>
+</ul>
+</li>
+<li>函数空间：$f:X\to V$，记作$V^X$</li>
+<li>连续函数空间：$C^m(\Omega)$，m阶连续可导函数的空间，基于每个点的定义的，也就是每个点都要m阶导数存在且连续。</li>
+<li>$L^p(\Omega)$空间：p次方可积函数空间，p不等于2时，它是Banach空间而不一定是Hilbert空间<ul>
+<li>$L^2(\Omega)$空间：square integratable function space.</li>
+<li>p-norm：$||f||_p = (\int_S|f|^p\text ds)^{1/p}&lt;\infty$ </li>
+</ul>
+</li>
+<li>$l^p$空间：定义了p-norm的<strong>无限维</strong>坐标空间<ul>
+<li>p-norm: $||x||_p = (\sum_i{|x_i|^p})^{1/p}$</li>
+</ul>
+</li>
+</ul>
+<h2 id="弱形式"><a href="#弱形式" class="headerlink" title="弱形式"></a>弱形式</h2><p>weak form就是一些表达式加权积分后成立，我们就认为在它的弱形式成立。</p>
+<ul>
+<li>举个例子：</li>
+</ul>
+<p>Legendre多项式，在[-1,1]区间上有如下关系。</p>
+<script type="math/tex; mode=display">
+{\displaystyle \int _{-1}^{1}P_{m}(x)P_{n}(x)\,\mathrm {d} x={\frac {2}{2n+1}}\delta _{mn}}</script><p>那么我们假设在[-1,1]上有3阶多项式空间$P^3([-1,1])$，那么这个多项式空间和$P_0,P_1,P_2,P_3$ 四个Legendre多项式张成的空间是一样的。</p>
+<p>那么在$\int_{-1}^1{f(x)v(x)}\text d x, v(x) \in P^3([-1,1])$ 的弱形式下，4阶Legendre多项式$P_4(x) = \frac 1 8 (35x^4-30x^2+3)$ 和函数$g(x) = 0 $的意义是一样的。</p>
+<p>也就是说，如果我们用3阶多项式空间去解一个精确解是$P_4(x)$的方程，我们可能会得到0，并且还无法分辨0是不是真解。</p>
+<ul>
+<li>举个例子2：</li>
+</ul>
+<p>弱形式还可以应用于导数。</p>
+<p>比如$\int gv w \text d  x = \int f’ v w \text dx$</p>
+<p>那么在弱形式的意义下，$f’=g$，尽管实际上$f’,g$可能完全不一样。 </p>
+<ul>
+<li>总结</li>
+</ul>
+<p>FEM求弱形式的逻辑：</p>
+<p>FEM只能找到具体求解之前确定的有限元空间$\Omega_{h,p}$ 内的弱解，那么：</p>
+<ol>
+<li>如果真解在其中，那么必然能找到。</li>
+<li>如果真解不在其中，那么在很多情况下可以证明：<ol>
+<li>找到的弱解是有限元空间$V_h$中<strong>最接近</strong>真解的<ol>
+<li>因为误差的投影为0，几何意义是垂直；</li>
+<li>点到平面垂线最短。</li>
+</ol>
+</li>
+<li>随着单元数增加，$h$减小，或者阶数$p$增加，找到的弱解会<strong>趋近于</strong>真解，误差（的某种模）会越来越小，因为函数空间会越来越完备。</li>
+</ol>
+</li>
+</ol>
+<h2 id="组装矩阵"><a href="#组装矩阵" class="headerlink" title="组装矩阵"></a>组装矩阵</h2><p>双线性形式$a(u,v)$对应着一个矩阵，只要选定函数空间$u_i \in V, v_j\in \hat V$，那么矩阵$A$的元素为$a_{ij}=a(u_i,v_j)$。具体积分怎么弄就是另一回事儿了。</p>
+<p>线性形式$L(v)$对应着一个向量，其元素同理为$L_i=L(v_j)$。</p>
+<h3 id="积分法Quadrature"><a href="#积分法Quadrature" class="headerlink" title="积分法Quadrature"></a>积分法Quadrature</h3><p>quadrature和integral是两个概念，虽然中文都可以叫积分，但是quadrature主要是数值积分。最常见的是Gauss积分法，但是其实数学家和FEM家们能玩出无数花样。</p>
+<ul>
+<li>1维<sup><a href="#fn_1d_quad" id="reffn_1d_quad">1d_quad</a></sup><ul>
+<li>最常用的是Gauss quadrature，这其实是一类积分法，插值点是非均匀分布的。<ul>
+<li>$\int_{a}^{b}{f\text dx}=\int_{a}^{b}{wg\text dx} \approx \sum_{i=1}^N{w_ig(x_i)}$</li>
+<li>其中的$x_i$叫插值点（abscissas）通常是一些特征函数的零点或者极值点</li>
+<li>最常用的区间是[-1,1]，也有[0,$+\infty$)，[0,1]的。</li>
+<li>根据权重不同，有不同的积分法，分别可以达到不同的精度。通常可以达到$2N-1$次以下的多项式精确积分。</li>
+<li>积分法一般是以Gauss-XXX-YYY命名，XXX是Lobatto，Radau或者留空，表示点的排布是否包括部分或全部端点，YYY一般是一种多项式的名字，积分点就取得它的零点或者极值点。<ul>
+<li>Lobatto积分，包含端点的贡献。</li>
+<li>Radau积分，包含左端点，不含右端点</li>
+<li>什么都不选，通常不包含端点。</li>
+<li>其他名字的：Clenshaw-Curtis quadrature：Chebyshev极值点</li>
+</ul>
+</li>
+<li>半无限域的<ul>
+<li>Gauss-Laguerre积分：[0,$+\infty$)</li>
+<li>Gauss-Hermite积分：[0,$+\infty$)。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>此外还有Newton-Cotes积分，均匀分布插值点。</li>
+</ul>
+</li>
+<li>2维<ul>
+<li>如果是四边形单元，1维积分法的向量积可以用。</li>
+<li>如果是三角形单元<ul>
+<li>可以当成有节点重合的四边形单元</li>
+<li>寻找对称积分规则<sup><a href="#fn_polyquad" id="reffn_polyquad">polyquad</a></sup>。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>3维<ul>
+<li>同二维，用低维扩展或者重新寻找对称积分规则。</li>
+</ul>
+</li>
+<li>其他<ul>
+<li>其他积分方法，比如Monte Carlo之类的也是可行的。</li>
+</ul>
+</li>
+</ul>
+<blockquote id="fn_1d_quad">
+<sup>1d_quad</sup>. <a href="https://link.springer.com/content/pdf/bbm%3A978-1-4612-0101-4%2F1.pdf" target="_blank" rel="noopener">Quadature rules</a><a href="#reffn_1d_quad" title="Jump back to footnote [1d_quad] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_polyquad">
+<sup>polyquad</sup>. <a href="https://github.com/vincentlab/Polyquad" target="_blank" rel="noopener">Polyquad</a><a href="#reffn_polyquad" title="Jump back to footnote [polyquad] in the text."> &#8617;</a>
+</blockquote>
+<h3 id="边界条件"><a href="#边界条件" class="headerlink" title="边界条件"></a>边界条件</h3><p>FEM里边界条件有两种，以泊松方程</p>
+<script type="math/tex; mode=display">
+\begin{split}- \nabla^{2} u &= f \quad {\rm in} \ \Omega, \\
+u &= a \quad {\rm on} \ \Gamma_{D}, \\
+\nabla u \cdot n &= g \quad {\rm on} \ \Gamma_{N}. \\\end{split}</script><p>的双线性形式</p>
+<script type="math/tex; mode=display">
+a(u, v) = L(v) \quad \forall \ v \in \hat{V},</script><p>为例：</p>
+<ul>
+<li>本质边界条件：essential boundary condition: 施加在函数空间里，比如函数空间$V$要求满足$u=a \text{ on } \Gamma_D$</li>
+<li>自然边界条件：natural boundary condition：施加在变分形式里，比如$L(v)=\int_\Omega{fv\text{d}\mathbf{x}}+\int_{\Gamma_N}gv\text{d}s$<ul>
+<li>变分形式里的话就不用管了，按式子积分就是了。</li>
+</ul>
+</li>
+</ul>
+<h4 id="本质边界条件"><a href="#本质边界条件" class="headerlink" title="本质边界条件"></a>本质边界条件</h4><p>本质边界条件一般是直接调整矩阵系数。</p>
+<h5 id="保对称性特殊处理"><a href="#保对称性特殊处理" class="headerlink" title="保对称性特殊处理"></a>保对称性特殊处理</h5><p>书中6.3节</p>
+<p>对于对称问题，直接施加Dirichlet BC是不对称的。所以FEniCS玩了一些技巧。</p>
+<p>在单元矩阵中，对I自由度直接施加Dirchlet BC得到的是设置系数$a_{I,I}=1, a_{I,J\ne I}=0, b_{I}=b_D$，但是对称性要求$a_{J\ne I,I}=a_{I,J\ne I}=0$，所以需要用Gauss消去法，在设置完第$I$行之后，对第$J$行进行操作，使其$a_{J\ne I,I}=0$。</p>
+<p>然后往全局矩阵里装。最后还有一个扫尾工作，需要对全局矩阵的LHS和RHS进行调整，加上减去的一些东西（这部分我没看懂）。</p>
+<p>另一种方法是从全局矩阵中抽出BC对应的DOF不解，但是会使全局矩阵维度不一致。FEniCS没有采用这种方法。</p>
+<p>首次设置系数是在<code>DirichletBC::apply()</code>函数，但是对称化是在<code>SystemAssembler</code></p>
+<h2 id="求解"><a href="#求解" class="headerlink" title="求解"></a>求解</h2><p>求解分为非线性部分、定常部分和线性代数部分。</p>
+<h3 id="非线性"><a href="#非线性" class="headerlink" title="非线性"></a>非线性</h3><h4 id="牛顿法"><a href="#牛顿法" class="headerlink" title="牛顿法"></a>牛顿法</h4><p>对$R(x)=0$，记$J=\frac{\partial R}{\partial x}, J_{ij}=\frac{\partial R_i}{\partial x_j}$</p>
+<p>牛顿法为：</p>
+<p>$x_{n+1} = x_n - J^{-1} R(x_n)$</p>
+<p>牛顿法理论上是2次收敛。</p>
+<ul>
+<li>可以衍生出非精确牛顿法（inexact Newton method），还有一些准牛顿法（quasi-Newton method）之类的方法减少计算代价。</li>
+<li>可以和线性代数部分结合起来，比如Newton-Krylov方法。</li>
+</ul>
+<h4 id="Picard迭代"><a href="#Picard迭代" class="headerlink" title="Picard迭代"></a>Picard迭代</h4><p>$R(x)=0$，将其变形为$x=F(x)$</p>
+<p>Picard迭代为$x_{n+1}=F(x_n)$</p>
+<p>对$F(x)$的要求是有压缩性，并且解为其不动点</p>
+<h3 id="非定常"><a href="#非定常" class="headerlink" title="非定常"></a>非定常</h3><h4 id="需要考虑的点"><a href="#需要考虑的点" class="headerlink" title="需要考虑的点"></a>需要考虑的点</h4><p>NASA在考察ODEs的RK时，有以下考虑：</p>
+<ol>
+<li>Order condition，满足精度需要达到的系数满足的关系。</li>
+<li>Simplifying Assumptions，如果系数满足某些条件，可以在实现时简化</li>
+<li>Error：p-阶方法，全局误差是p阶，局部误差是p+1阶，对非常刚性的奇异摄动问题，stiffly-accurate问题能给出更好的解。</li>
+<li>Linear Stability，常规的A，L稳定性以及其他S,D稳定性等</li>
+<li>Nonlinear Stability，不懂</li>
+<li>Internal Stability，IMEX方法的稳定性与内部稳定性有关。</li>
+<li>Dense output，步内插值</li>
+<li>Conservation, Symplecticity and Symmetry，所有一致的DIRK,SDIRK，ESDIRK都保证1阶线性首次积分守恒。二次和三次积分守恒很难了。辛（Symplecticity ）DIRK方法有的可以保证某些二次积分守恒。对于可逆的方程适合用对称的RK方法（时间步可以取负）。</li>
+<li>Dissipation and Dispersion Accuracy 色散耗散特性</li>
+<li>Memory Economization如何省内存，结论是不用省，大头不在RK本身。</li>
+<li>Regularity 对稳态解是否会产生新的稳态（R1）或者稳定震荡（R2）。RK保持R1或者R2的话不会超过2阶。</li>
+<li>Boundary and Smoothness Order Reduction 当$f(t,u)=A(t,u)u$中$A(t,u)$是间断的时候会怎样。一般会有order reduction。</li>
+<li>Efficiency</li>
+<li>Solvability 可解性，按IRK离散得到的非线性代数方程组是否存在唯一解。这是有条件的。</li>
+<li>Implementation </li>
+<li>Step-Size Control 一般用embed output配合PID类控制器来控制</li>
+<li>Iteration Control 关键是非线性迭代时什么时候更新Jacobian。</li>
+<li>Stage-Value Predictors 非线性迭代的初值估计</li>
+<li>Discontinuities，探测、确定断点、重新积分</li>
+<li>Software 实现的软件</li>
+</ol>
+<h4 id="常用的算法"><a href="#常用的算法" class="headerlink" title="常用的算法"></a>常用的算法</h4><ul>
+<li>线性单步法（single-stage method）<ul>
+<li>常用SSP-RK，参考<sup><a href="#fn_SSP_RK" id="reffn_SSP_RK">SSP_RK</a></sup></li>
+<li>NASA 2016年报告推荐了一种ESDIRK4(3)6L[2]SA 算法（显式第一步、对角相同、隐式RK，4阶、内嵌3阶、6步，L-stable，中间步精度是2阶，stiffly-accurate方法！）<sup><a href="#fn_NASA_RK" id="reffn_NASA_RK">NASA_RK</a></sup></li>
+</ul>
+</li>
+</ul>
+<blockquote id="fn_NASA_RK">
+<sup>NASA_RK</sup>. <a href="https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/20160005923.pdf" target="_blank" rel="noopener">NASA/TM–2016–219173: Diagonally Implicit Runge-Kutta Methods for Ordinary Differential Equations. A Review</a><a href="#reffn_NASA_RK" title="Jump back to footnote [NASA_RK] in the text."> &#8617;</a>
+</blockquote>
+<blockquote id="fn_SSP_RK">
+<sup>SSP_RK</sup>. <a href="http://www.cfm.brown.edu/people/sg/SSPpage/sspsite/" target="_blank" rel="noopener">http://www.cfm.brown.edu/people/sg/SSPpage/sspsite/</a><a href="#reffn_SSP_RK" title="Jump back to footnote [SSP_RK] in the text."> &#8617;</a>
+</blockquote>
+<ul>
+<li>线性多步法（multi-stage method）<ul>
+<li>常用BDF2，BDF1=Euler，BDF2是L-stable的，更高阶的不是L-stable的。</li>
+</ul>
+</li>
+<li>还有别的，比如 Exponential integrators方法之类的。</li>
+<li>显式/隐式<ul>
+<li>显式：时间步长短，每步代价小<ul>
+<li>编程简单，并行简单</li>
+<li>非定常适合，如LES</li>
+<li>限制不在流动求解时适合，如燃烧。</li>
+</ul>
+</li>
+<li>隐式：时间步长可稍长一些，每步代价大<ul>
+<li>定场求解</li>
+<li>编程复杂，并行也复杂</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="线性代数的求解"><a href="#线性代数的求解" class="headerlink" title="线性代数的求解"></a>线性代数的求解</h3><ul>
+<li>LU，QR等<ul>
+<li>稠密小矩阵可以用</li>
+</ul>
+</li>
+<li>Krylov，小矩阵不明显，通常n&gt;1000性能开始显现，常用于稀疏矩阵，可以与Newton法结合形成Newton-Krylov方法。<ul>
+<li>CG, BiCG,GMRES</li>
+<li>不限制内存的话GMRES性能几乎是最好的</li>
+<li>新方法IDR(s)</li>
+<li>preconditioner是Krylov的性能关键<ul>
+<li>ILU</li>
+<li>physics-based.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Multigrid<ul>
+<li>理论时间O(n)</li>
+<li>AMG</li>
+<li>FAS</li>
+<li>Multi-p</li>
+</ul>
+</li>
+</ul>
+<h3 id="并行"><a href="#并行" class="headerlink" title="并行"></a>并行</h3><h2 id="CFD中的FEM"><a href="#CFD中的FEM" class="headerlink" title="CFD中的FEM"></a>CFD中的FEM</h2><h3 id="不可压缩"><a href="#不可压缩" class="headerlink" title="不可压缩"></a>不可压缩</h3><p>主要是鞍点问题，压力和速度采用不同的单元解决。合适的单元满足LBB条件即可。</p>
+<h3 id="可压缩"><a href="#可压缩" class="headerlink" title="可压缩"></a>可压缩</h3><h4 id="SUPG"><a href="#SUPG" class="headerlink" title="SUPG"></a>SUPG</h4><p>属于连续Galerkin方法，test function有特殊处理。</p>
+<p>边界处理（没看懂）</p>
+<p>特色软件：<a href="https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/20160007758.pdf" target="_blank" rel="noopener">HPCMP CREATE™-AV Conservative Field Finite Element (COFFE)</a></p>
+<h4 id="DG"><a href="#DG" class="headerlink" title="DG"></a>DG</h4><p>和FVM很相似。边界按间断进行处理</p>
+<p>边界条件（艹TMD没看懂，水太深）</p>
+<h5 id="Flux-Reconstruction"><a href="#Flux-Reconstruction" class="headerlink" title="Flux Reconstruction"></a>Flux Reconstruction</h5><p>这个思想在PyFR的<a href="https://freddie.witherden.org/pages/publications/posters/ukmac2013.pdf" target="_blank" rel="noopener">海报</a>里写得很直白了。</p>
+<ol>
+<li>solution point是求解$u$所用</li>
+<li>flux point是计算$f$所用</li>
+<li>界面$f$不同</li>
+<li>间断分解修正得到统一的$f^*$</li>
+<li>构造修正函数$g$，并用$f-f^*$做scaling</li>
+<li>用$g$修正那个$f$</li>
+<li>对$f$求导得$\nabla \cdot f$，带入显式求解器，更新u</li>
+</ol>
+<p>PyFR的特点是利用了新的软件技术来减少代码量。</p>
+<h2 id="FE方法的一些理论问题"><a href="#FE方法的一些理论问题" class="headerlink" title="FE方法的一些理论问题"></a>FE方法的一些理论问题</h2><p>理论问题主要是指解的存在性、唯一性、收敛性和稳定性。</p>
+<h3 id="LBB条件"><a href="#LBB条件" class="headerlink" title="LBB条件"></a>LBB条件</h3><p>鞍点问题稳定性的inf-sup条件，又叫LBB条件（Ladyzenskaja-Babuška-Brezzi condition）<sup><a href="#fn_LBB1" id="reffn_LBB1">LBB1</a></sup>。</p>
+<blockquote id="fn_LBB1">
+<sup>LBB1</sup>. <a href="http://cims.nyu.edu/~kellen/cfd/FEM_Stokes_Inf_Sup_Notes.pdf" target="_blank" rel="noopener">FEM Stokes Inf Sup Notes</a><a href="#reffn_LBB1" title="Jump back to footnote [LBB1] in the text."> &#8617;</a>
+</blockquote>
+<p>鞍点问题来自于连续性方程 $\nabla\cdot u = 0$。</p>
+<p>LBB条件对于连续的方程弱形式成立，但是对于离散之后的方程并不一定成立，需要对解空间进行一定的选择。</p>
+<p>LBB条件由很多等效的提法，一种实用的提法是：解的空间要恰当地大和小，使LBB不等式满足，使得算子B零空间有非零元素。</p>
+<p>从连续LBB到离散LBB，根据Fortin’s Lemma，可以引入特别的restriction operator，把连续空间映射到离散空间。</p>
+<p>可选组合有：P/U = P2/P1,P1-bubble/P1</p>
+<p>此外还需要考虑Lax-Milgram定理<sup><a href="#fn_LBB2" id="reffn_LBB2">LBB2</a></sup> ，它描述了解的存在唯一性和方程算子椭圆性之间的关系。</p>
+<p>不过混合有限元解的存在唯一性的还需要考虑LBB条件。</p>
+<blockquote id="fn_LBB2">
+<sup>LBB2</sup>. <a href="http://people.maths.ox.ac.uk/suli/mixed_FEM_lectures.pdf" target="_blank" rel="noopener">mixed FEM lectures</a><a href="#reffn_LBB2" title="Jump back to footnote [LBB2] in the text."> &#8617;</a>
+</blockquote>
+<h3 id="Petrov-Galerkin"><a href="#Petrov-Galerkin" class="headerlink" title="Petrov-Galerkin"></a>Petrov-Galerkin</h3><p>传统的Galerkin方法上，FE空间和试函数空间相同（边界条件可不同），但是算子并不随FE空间改变（如果算子也随着发生改变，那么叫做广义Galerkin方法）</p>
+<p>Petrov-Galerkin中的FE空间和试函数空间不仅边界条件不同，函数本身也不同。</p>
+<p>由于试函数空间的偏移，可以起到类似上风的作用，增加求解对流问题或者双曲问题的稳定性。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果觉得此文不错，欢迎大爷/姐姐打赏</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="程迪 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="程迪 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    程迪
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://chengdi123000.github.io/2018/01/05/FEniCS概念笔记/" title="FEniCS的概念笔记">http://chengdi123000.github.io/2018/01/05/FEniCS概念笔记/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/FEniCS/" rel="tag"># FEniCS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/05/OpenFOAM在docker中的使用/" rel="next" title="OpenFOAM在docker中的使用">
+                <i class="fa fa-chevron-left"></i> OpenFOAM在docker中的使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/05/MASA的安装/" rel="prev" title="MASA的安装">
+                MASA的安装 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.JPG"
+                alt="程迪" />
+            
+              <p class="site-author-name" itemprop="name">程迪</p>
+              <p class="site-description motion-element" itemprop="description">生活科研感悟</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    <span class="site-state-item-count">9</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">标签</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/chengdi123000" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:chengdi123000@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.linkedin.com/in/di-cheng-b7a20713" target="_blank" title="Linkedin">
+                      
+                        <i class="fa fa-fw fa-linkedin"></i>Linkedin</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/116932714936350117488" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i>Google</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/catdog_ustc" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.facebook.com/di.cheng.73" target="_blank" title="FB Page">
+                      
+                        <i class="fa fa-fw fa-facebook"></i>FB Page</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://stackoverflow.com/users/4592964/catdog" target="_blank" title="StackOverflow">
+                      
+                        <i class="fa fa-fw fa-stack-overflow"></i>StackOverflow</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.youtube.com/channel/UC7Ae0mBH6gYSBoc2vPPUYVQ" target="_blank" title="YouTube">
+                      
+                        <i class="fa fa-fw fa-youtube"></i>YouTube</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.instagram.com/chengdi123000/" target="_blank" title="Instagram">
+                      
+                        <i class="fa fa-fw fa-instagram"></i>Instagram</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+            <div class="cc-license motion-element" itemprop="license">
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+                <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+              </a>
+            </div>
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://cfl3d.cn" title="CFL3D研究" target="_blank">CFL3D研究</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://cfl3d.larc.nasa.gov" title="CFL3D" target="_blank">CFL3D</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.easycae.cn" title="EasyCAE" target="_blank">EasyCAE</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#FEniCS的概念笔记"><span class="nav-text">FEniCS的概念笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#有限元思路"><span class="nav-text">有限元思路</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#加权余量的duck-typing-思路"><span class="nav-text">加权余量的duck typing 思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数空间思路"><span class="nav-text">函数空间思路</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数空间"><span class="nav-text">函数空间</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#按性质分类"><span class="nav-text">按性质分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他概念"><span class="nav-text">其他概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#按常见具体内容举例"><span class="nav-text">按常见具体内容举例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#弱形式"><span class="nav-text">弱形式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#组装矩阵"><span class="nav-text">组装矩阵</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#积分法Quadrature"><span class="nav-text">积分法Quadrature</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#边界条件"><span class="nav-text">边界条件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#本质边界条件"><span class="nav-text">本质边界条件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#保对称性特殊处理"><span class="nav-text">保对称性特殊处理</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#求解"><span class="nav-text">求解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#非线性"><span class="nav-text">非线性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#牛顿法"><span class="nav-text">牛顿法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Picard迭代"><span class="nav-text">Picard迭代</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非定常"><span class="nav-text">非定常</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#需要考虑的点"><span class="nav-text">需要考虑的点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常用的算法"><span class="nav-text">常用的算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线性代数的求解"><span class="nav-text">线性代数的求解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#并行"><span class="nav-text">并行</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CFD中的FEM"><span class="nav-text">CFD中的FEM</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#不可压缩"><span class="nav-text">不可压缩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可压缩"><span class="nav-text">可压缩</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SUPG"><span class="nav-text">SUPG</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DG"><span class="nav-text">DG</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Flux-Reconstruction"><span class="nav-text">Flux Reconstruction</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FE方法的一些理论问题"><span class="nav-text">FE方法的一些理论问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#LBB条件"><span class="nav-text">LBB条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Petrov-Galerkin"><span class="nav-text">Petrov-Galerkin</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">程迪</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/theme-next/hexo-theme-next">NexT.Muse</a> v6.0.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.0.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.0.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.0.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.0.0"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://chengdis-blog.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://chengdi123000.github.io/2018/01/05/FEniCS概念笔记/';
+          this.page.identifier = '2018/01/05/FEniCS概念笔记/';
+          this.page.title = 'FEniCS的概念笔记';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://chengdis-blog.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

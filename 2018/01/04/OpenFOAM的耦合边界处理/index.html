@@ -77,18 +77,15 @@
 
 
 
-<meta name="description" content="chengdi123000.github.ioThis is my website. I am an engineer of China Academy of Aerospace Aerodynamics. Now I am a visiting scholar at University of Connecticut. I am interested in fluid mechanics and">
 <meta name="keywords" content="OpenFOAM, CFD, HPC, combustion">
 <meta property="og:type" content="website">
 <meta property="og:title" content="冰水混合物">
-<meta property="og:url" content="http://chengdi123000.github.io/README.html">
+<meta property="og:url" content="http://chengdi123000.github.io/404.html">
 <meta property="og:site_name" content="冰水混合物">
-<meta property="og:description" content="chengdi123000.github.ioThis is my website. I am an engineer of China Academy of Aerospace Aerodynamics. Now I am a visiting scholar at University of Connecticut. I am interested in fluid mechanics and">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-05T15:59:13.326Z">
+<meta property="og:updated_time" content="2018-01-05T15:31:57.581Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="冰水混合物">
-<meta name="twitter:description" content="chengdi123000.github.ioThis is my website. I am an engineer of China Academy of Aerospace Aerodynamics. Now I am a visiting scholar at University of Connecticut. I am interested in fluid mechanics and">
 
 
 
@@ -120,7 +117,7 @@
 
 
 
-  <link rel="canonical" href="http://chengdi123000.github.io/README.html"/>
+  <link rel="canonical" href="http://chengdi123000.github.io/404.html"/>
 
 
 
@@ -480,7 +477,8 @@
       
         <p>关于OpenFOAM中耦合边界的具体实现</p>
 <a id="more"></a>
-<h1 id="OpenFOAM的耦合边界处理"><a href="#OpenFOAM的耦合边界处理" class="headerlink" title="OpenFOAM的耦合边界处理"></a>OpenFOAM的耦合边界处理</h1><h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>首先，在计算机里，大量的矩阵其实是稀疏矩阵，而矩阵的表示方式都是非零元素（non-zero elements）和索引（index，即元素所在行列号，本文按照c语言的约定，从0开始）分开的。这是稀疏矩阵算法的特殊性，所以指明OpenFOAM中的矩阵时，需要同时制定非零元素的存放之处和索引的存放之处。</p>
+<h1 id="OpenFOAM的耦合边界处理"><a href="#OpenFOAM的耦合边界处理" class="headerlink" title="OpenFOAM的耦合边界处理"></a>OpenFOAM的耦合边界处理</h1><h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><p>首先，在计算机里，大量的矩阵其实是稀疏矩阵，而矩阵的表示方式都是非零元素（non-zero elements）和索引（index，即元素所在行列号，本文按照c语言的约定，从0开始）分开的。这是稀疏矩阵算法的特殊性，所以指明OpenFOAM中的矩阵时，需要<strong>同时指定非零元素的存放之处和索引</strong>的存放之处。</p>
+<p>其实OpenFOAM中的还算简单，FEM程序中的索引更加复杂化。似乎索引的储存、管理和处理是PDE程序和ODE程序比较大的区别点。常规的计算物理讲算法太细，讲程序组织比较少。低阶程序的索引相对简单，高阶必然涉及到每个单元更多的自由度，索引的管理就复杂很多。</p>
 <p>而常见的稀疏矩阵的表示方式有：</p>
 <ol>
 <li><p>序列对角模式：对于对角阵而言，如果是按照对角顺序储存非零元素，可以无需储存索引；</p>
@@ -494,12 +492,21 @@
 <li><p>Banded，带状储存模式：对于带状结构，可以采用此种模式，对于一维问题，矩阵一般来说都是带状的，但是对于三维问题，很难是窄带结构的；</p>
 </li>
 </ol>
-<p>实际上，OpenFOAM采用的是一种极为特殊的分割储存的COO模式，常见教材称之为LDU分裂模式，常记为$A=L+D+U$，其中$L,D,U$分别代表矩阵$A$的下三角部分（行号大于列号），对角部分和上三角部分（行号小于列号）。但是其实它远比上述LDU分裂（或者称之为LDU加法分解，注意与矩阵的LU乘法分解的区别）要复杂得多。</p>
+<p>实际上，OpenFOAM采用的是一种极为特殊的分割储存的COO模式，常见教材称之为LDU分裂模式，常记为$A=L+D+U$，其中$L,D,U​$分别代表矩阵$A$的下三角部分（行号大于列号），对角部分和上三角部分（行号小于列号）。但是其实它远比上述LDU分裂（或者称之为LDU加法分解，注意与矩阵的LU乘法分解的区别）要复杂得多。</p>
+<h2 id="逻辑"><a href="#逻辑" class="headerlink" title="逻辑"></a>逻辑</h2><p>OpenFOAM是内含线性代数求解器的，这使其分析难度剧增，很闹搞清楚它的线性代数求解器是怎么工作的。</p>
+<p>OpenFOAM的线性代数求解逻辑是矩阵分块思想和边界单独储存思想。而且有一些进化过程中的遗留和原始痕迹。</p>
+<p>首先矩阵的主要部分是和网格拓扑相关的L、D、U矩阵，由<code>lduMatrix</code>矩阵处理的（但是它不像另一个非常相似的类<code>LduMatrix&lt;DType,LUType&gt;</code>） ，存的所有系数全是scalar类型的，并且存有lduAddr()来处理L、U矩阵的索引。</p>
+<p>固定的来自网格的L、U索引带来的问题就是无法处理耦合边界条件，因为在网格的数据结构中，耦合边界条件和其他边界条件时一样的，但是实际上，耦合边界条件相当于另一边还有网格，应该和内部界面一样的处理方式才对。耦合边界条件包括cyclic和processor两大类。都不好处理。</p>
+<p>于是OpenFOAM的设计思路是采用单独处理边界条件的方式。OpenFOAM的边界条件相关系数是存在fvMatrix中的，<code>fvMatrix&lt;Type&gt;</code>是<code>lduMatrix</code>的子类，请注意它可以是非标量的，这使其设计进一步复杂化。fvMatrix中有internalCoeffs和boundaryCoeffs两个成员，储存相关系数，在后面的求解时，内部系数会事先加在对角项中，外部系数会事先加到源项中，这样就构成了完整的方程组。</p>
+<p>对于耦合边界而言，内部系数是一样的，但是外部系数不同，外部系数要乘以外部的单元值再加到源项上。</p>
+<p>此外，由于内外系数加的位置在方程的两侧，所以有时候会引入一些正负符号上的差异。</p>
+<p>而且，<code>lduMatrix</code>为了实现BiCG类的Krylov求解器，是支持<code>Tmul()</code>操作的，这导致当它要处理耦合边界的时候，还需要用耦合边界的内部系数乘以外部单元值。这些操作都非常的诡异。</p>
+<p>但是OpenFOAM就是这么实现的，我感觉这种情况多半是有Legacy code的问题。而且这也导致了OpenFOAM的耦合求解器一直有问题，很难求解可压缩流动的方程。</p>
 <h2 id="记号"><a href="#记号" class="headerlink" title="记号"></a>记号</h2><p>首先引入以下记号和符号：</p>
 <ul>
 <li><p>$N_i$，第i个处理器中的单元数，$\sum_i {N_i} = N$为单元总数。由于OpenFOAM是cell-center based FVM，所以$N$就是求解的自由度数，也就是待求解变量集合$x$的维度；</p>
 <ul>
-<li><p>同理，$x$也可以视为各个处理器上待求解变量$x_i$的垂直连接（vertical concatenation）$x=x_0||x_1||x_2||x_3||\dots||x_{N-1}$</p>
+<li><p>同理，$x​$也可以视为各个处理器上待求解变量$x_i​$的垂直连接（vertical concatenation）$x=x_0||x_1||x_2||x_3||\dots||x_{N-1}​$</p>
 </li>
 <li><script type="math/tex; mode=display">
 x= \begin{bmatrix} 
@@ -534,17 +541,22 @@ A= \begin{bmatrix}
      \end{bmatrix} + 
 O</script><ul>
 <li>$A_i=L_i+D_i+U_i+I_i$，采用LDU分裂模式表示。</li>
-<li>$O$表示Off diagonal部分，也就是不在LDU分裂模式表示范围内的，和处理器之间的耦合边界的系数</li>
+<li>$C$表示Coupling耦合部分，也就是不在<code>lduMatrix::lduAddr()</code>表示范围内的部分，包括处理器之间的耦合边界的系数</li>
+<li>一个简化描述如下</li>
+<li><img src="/images/演示文稿1.jpg" alt="演示文稿1"></li>
 </ul>
 </li>
 <li><p>源项为$s$，同理也可以按处理器分裂为$s_i$。</p>
 </li>
 <li><p>总体的方程为$A\cdot x=s$，展开之后应该是$L+D+U$</p>
 </li>
-<li><p>但是在每个处理器上为$A_i\cdot x_i  = A’_i\cdot x-\sum_{j}\sum_c{B^C_{j,c}x^0_j}= s_i $</p>
+<li><p>但是在每个处理器上调用<code>lduMatrix::solve()</code>时为$A_i\cdot x_i  = A’_i\cdot x-\sum_{j}\sum_c{B^C_{j,c}x^0_j}= s_i $</p>
 <ul>
 <li>$A_i = A’_i+\sum I^N = L_i+D_i+U_i+I^N_{i,c}$</li>
 <li>网格中每个Patch中的边界面的编号连续排列的，这样可以减少边界面索引的储存量。</li>
+<li><img src="/images/lduMatrix_solve_diagram.png" alt="lduMatrix_solve_diagram"></li>
+<li>上式中C23和C32都被储存了起来，但是其实调用<code>lduMatrix::solve()</code>时C23才是有用的，C32其实已经被加到对角项中了。但是计算<code>Tmul()</code>函数时会用到C32。</li>
+<li>注意：<code>fvMatrix::solve()</code>调用时会玩些花样，修改对角项和源项之后，再调用<code>lduMatrix::solve()</code>。这是非常诡异的行为。</li>
 </ul>
 </li>
 </ul>
@@ -560,15 +572,15 @@ O</script><ul>
 <p>其中增加的$I^C_c, B^C_c$的非零元素依然是储存为<code>fvMatrix&lt;T&gt;</code>中的<code>internalCoeffs_, boundaryCoeffs_</code>，分为若干patch进行索引，其中$I^C_c$和$I^N_n$没有本质差别，对于编号为n的patch的索引为<code>fvm.psi().lduAddr().patchAddr(n)</code>。</p>
 <p>但 $B^C_c$和 $b^N_n$ 的差别较大，一个是矩阵，一个是向量，二者量纲也不相同！$B^C_c$的索引包括行列两个索引，其中行索引还是<code>fvm.psi().lduAddr().patchAddr(n)</code>，列索引则是<code>neighbPatch().faceCells()</code></p>
 <p>而$T_c$ 则是element wise的坐标变换矩算子，对于$x$为标量的情形，$T_c$的作用就是单位阵。</p>
-<p>但是$T_c$的作用可以非常复杂，比如fixedJump条件就还涉及到$x^0$ 的平移。（但是此时存在一些问题，比如0场的Amul()作用之后非0。）</p>
+<p>但是$T_c$的作用可以非常复杂，比如fixedJump条件就还涉及到$x^0$ 的平移。（但是此时存在一些问题，比如0场的<code>Amul()</code>作用之后非0。）</p>
 <p>$x^0$表示$x$ 的旧值。</p>
 <h3 id="多处理器存在耦合边界的情况"><a href="#多处理器存在耦合边界的情况" class="headerlink" title="多处理器存在耦合边界的情况"></a>多处理器存在耦合边界的情况</h3><p>多处理器的耦合边界通常为processor边界条件。</p>
 <p>此时方程$A\cdot x= s$可分解在每个处理器i上：</p>
 <p>$[L_i+(D_i+\sum_n{I^N_{i,n}}+\sum_c{I^C_{i,c}})+U_i]\cdot x_i = s’_i + \sum_n{b^N_{i,n}}+\sum_c{ B^C_{i,c}} T_{ji,c}(x^0_j)$</p>
-<p>注意，下标中含$i​$的量才储存在processor i的内存中。$x^0_j,j\ne i​$的访问需要通信。</p>
+<p>注意，下标中含$i$的量才储存在processor i的内存中。$x^0_j,j\ne i$的访问需要通信。</p>
 <h2 id="一些奇怪的情形"><a href="#一些奇怪的情形" class="headerlink" title="一些奇怪的情形"></a>一些奇怪的情形</h2><p><code>lduMatrix</code>中定义的<code>Amul</code>, <code>Tmul</code>和<code>residual</code>函数采用的约定和常规数学教科书不同。</p>
 <ul>
-<li>理论上<code>Amul</code>应该定义了$A\cdot x = (L+D+U)\cdot x ​$操作。实际上它定义的是$[L+D+U]\cdot x - \sum_c{ B^C_c} T_c(x) ​$操作，我猜这样是便于和$s​$源项直接比较。实际上A的定义应该是$L+D+U-  \sum_c{ B^C_c} T_c​$ 。</li>
+<li>理论上<code>Amul</code>应该定义了$A\cdot x = (L+D+U)\cdot x $操作。实际上它定义的是$[L+D+U]\cdot x - \sum_c{ B^C_c} T_c(x) $操作，我猜这样是便于和$s$源项直接比较。实际上A的定义应该是$L+D+U-  \sum_c{ B^C_c} T_c$ 。</li>
 <li><code>Tmul</code>同理，不过把$B^C_c​$的非零元素换成了$I^C_c​$的非零元素。</li>
 <li><code>residual</code>的约定是$s-A\cdot x$，而不是反过来。 </li>
 </ul>
@@ -747,8 +759,8 @@ O</script><ul>
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/08/09/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2018/01/04/OpenFOAM的残差定义/" rel="next" title="OpenFOAM的残差定义">
+                <i class="fa fa-chevron-left"></i> OpenFOAM的残差定义
               </a>
             
           </div>
@@ -757,8 +769,8 @@ O</script><ul>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/01/04/OpenFOAM的残差定义/" rel="prev" title="OpenFOAM的残差定义">
-                OpenFOAM的残差定义 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/01/04/OpenFOAM输出完整矩阵/" rel="prev" title="OpenFOAM输出完整矩阵">
+                OpenFOAM输出完整矩阵 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -850,7 +862,7 @@ O</script><ul>
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-count">11</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -998,7 +1010,7 @@ O</script><ul>
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenFOAM的耦合边界处理"><span class="nav-text">OpenFOAM的耦合边界处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#摘要"><span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#记号"><span class="nav-text">记号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#各种情况下的矩阵组成"><span class="nav-text">各种情况下的矩阵组成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单一处理器无耦合边界情况"><span class="nav-text">单一处理器无耦合边界情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单一处理器有耦合边界情况"><span class="nav-text">单一处理器有耦合边界情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多处理器存在耦合边界的情况"><span class="nav-text">多处理器存在耦合边界的情况</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些奇怪的情形"><span class="nav-text">一些奇怪的情形</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#符号表"><span class="nav-text">符号表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fvMatrix-solveSegregated-基本结构"><span class="nav-text">fvMatrix::solveSegregated()基本结构</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenFOAM的耦合边界处理"><span class="nav-text">OpenFOAM的耦合边界处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#摘要"><span class="nav-text">摘要</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#逻辑"><span class="nav-text">逻辑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#记号"><span class="nav-text">记号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#各种情况下的矩阵组成"><span class="nav-text">各种情况下的矩阵组成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#单一处理器无耦合边界情况"><span class="nav-text">单一处理器无耦合边界情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#单一处理器有耦合边界情况"><span class="nav-text">单一处理器有耦合边界情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多处理器存在耦合边界的情况"><span class="nav-text">多处理器存在耦合边界的情况</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些奇怪的情形"><span class="nav-text">一些奇怪的情形</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#符号表"><span class="nav-text">符号表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fvMatrix-solveSegregated-基本结构"><span class="nav-text">fvMatrix::solveSegregated()基本结构</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
