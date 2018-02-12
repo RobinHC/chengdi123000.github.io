@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>http://chengdi123000.github.io/2018/02/11/2018-02-11-Install-CentOS-7-via-PXE-using-Serva/</loc>
+    <lastmod>2018-02-11T13:48:28.846Z</lastmod>
+    <data>
+        <display>
+        <title>Install CentOS 7 via PXE using Serva</title>
+        <pubTime>2018-02-11T13:16:30.000Z</pubTime>
+        
+        <tag>PXE</tag>
+         
+        <tag>Linux</tag>
+         
+         
+           
+             
+              <breadCrumb title="PXE" url="http://chengdi123000.github.io/categories/PXE/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://chengdi123000.github.io/2018/01/05/FEniCS%E6%A6%82%E5%BF%B5%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2018-01-14T02:50:12.316Z</lastmod>
     <data>
@@ -76,9 +98,9 @@
         <title>FEniCS在docker中的使用</title>
         <pubTime>2018-01-08T02:16:30.000Z</pubTime>
         
-        <tag>docker</tag>
-         
         <tag>FEniCS</tag>
+         
+        <tag>docker</tag>
          
          
            
@@ -203,9 +225,9 @@
         <title>OpenFOAM在docker中的使用</title>
         <pubTime>2018-01-05T08:16:30.000Z</pubTime>
         
-        <tag>OpenFOAM</tag>
-         
         <tag>docker</tag>
+         
+        <tag>OpenFOAM</tag>
          
          
            
